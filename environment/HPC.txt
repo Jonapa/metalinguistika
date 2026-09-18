@@ -1,0 +1,54 @@
+.cache (Microsoft only)
+.ssh
+.vscode-server
+.bash_history.mn5 (MareNostrum5 cluster)
+.bash_history.stg (Storage5 cluster) 
+.bash_logout
+.bash_profile
+.bashrc
+.ksrc
+
+#########################################################
+
+# Change password MN5
+passwd
+
+#########################################################
+
+# MN5
+bsc_quota
+bsc_project list (unixgroup)
+bsc_queues (QoS)
+	> acc_ehpc (Default)
+	> acc_debug
+	> acc_interactive
+	
+#########################################################
+
+# MN5
+/home/ehu/ehu129750 (aka home)
+/gpfs/scratch/ehpc678/jonapa (aka scratch, i had to create it)
+ln -s /gpfs/scratch/ehpc678/jonapa .
+export HF_HOME="/gpfs/scratch/ehpc678/jonapa/hf_cache"
+
+#########################################################
+
+# MN5
+salloc --account=ehpc678 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00 --gres=gpu:1
+salloc --account=ehpc678 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00
+
+#########################################################
+
+# Hyperion: x86_64, Rocky 8.10, and glibc 2.28
+	# GPU CUDA Version: 12.8
+	# module load CUDA/12.8.0 CUDA/12.9.0 CUDA/13.0.0
+# Calendula: x86_64, AlmaLinux 9.8 and glibc 2.34
+	# GPU CUDA Version: (?)
+	# module load CUDA/12.8.0 CUDA/13.0.0
+# MN5 (glogin2.bsc.es): x86_64, Red Hat 9.6, and glibc 2.34
+	# GPU CUDA Version: 13.2
+	# /apps/ACC/modulefiles/environment/cuda
+	# module load cuda/12.8 cuda/13.2 cuda/13.3
+uname -m
+cat /etc/os-release
+ldd --version | head -n 1
