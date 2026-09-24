@@ -17,6 +17,7 @@ passwd
 
 # MN5
 bsc_quota
+bsc_acct (GPU hours)
 bsc_project list (unixgroup)
 bsc_queues (QoS)
 	> acc_ehpc (Default)
