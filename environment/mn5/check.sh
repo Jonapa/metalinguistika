@@ -1,6 +1,6 @@
-source /gpfs/scratch/ehpc678/jonapa/build-env/bin/activate
-
 module load cuda/13.3
+
+source /gpfs/scratch/ehu26/ehu129750/build-env/bin/activate
 
 export ARCH_LIST="9.0a"
 export TORCH_CUDA_ARCH_LIST="${ARCH_LIST}"
@@ -10,9 +10,9 @@ export CUDAHOSTCXX=$CXX
 export MAX_JOBS=$(( $(nproc) / 2 ))
 export CMAKE_PREFIX_PATH=$(dirname $(which python))
 
-export TRITON_CACHE_DIR=/gpfs/scratch/ehpc678/jonapa/.cache/.triton
-export TORCHINDUCTOR_CACHE_DIR=/gpfs/scratch/ehpc678/jonapa/.cache/.inductor
-export CUDA_CACHE_PATH=/gpfs/scratch/ehpc678/jonapa/.cache/.nv
+export TRITON_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.triton
+export TORCHINDUCTOR_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.inductor
+export CUDA_CACHE_PATH=/gpfs/scratch/ehu26/ehu129750/.cache/.nv
 
 for i in {1..100}; do echo -n '#'; done; echo
 axolotl --help
@@ -36,11 +36,11 @@ python -c "import platform; print(f'Python: {platform.python_version()}')"
 for i in {1..100}; do echo -n '#'; done; echo
 
 for i in {1..100}; do echo -n '#'; done; echo
-ds_report
+DS_ACCELERATOR=cuda ds_report
 for i in {1..100}; do echo -n '#'; done; echo
 
 python -m pip check
 
-sh /home/ehu/ehu129750/jonapa/gpu_env_check.sh
+sh /gpfs/scratch/ehu26/ehu129750/gpu_env_check.sh
 
-source /gpfs/scratch/ehpc678/jonapa/build-env/bin/deactivate
+source /gpfs/scratch/ehu26/ehu129750/build-env/bin/deactivate

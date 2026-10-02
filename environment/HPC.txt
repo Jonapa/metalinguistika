@@ -13,6 +13,10 @@
 # Change password MN5
 passwd
 
+# Always log-in via ACC partition
+alogin1.bsc.es
+alogin2.bsc.es
+
 #########################################################
 
 # MN5
@@ -20,7 +24,8 @@ bsc_quota
 bsc_acct (GPU hours)
 bsc_project list (unixgroup)
 bsc_queues (QoS)
-	> acc_ehpc (Default)
+	> acc_ehpc (ejie)
+	> acc_resa (res)
 	> acc_debug
 	> acc_interactive
 	
@@ -28,15 +33,17 @@ bsc_queues (QoS)
 
 # MN5
 /home/ehu/ehu129750 (aka home)
-/gpfs/scratch/ehpc678/jonapa (aka scratch, i had to create it)
-ln -s /gpfs/scratch/ehpc678/jonapa .
-export HF_HOME="/gpfs/scratch/ehpc678/jonapa/hf_cache"
+/gpfs/scratch/ehu26/ehu129750 (aka scratch, i had to create it)
+ln -s /gpfs/scratch/ehu26/ehu129750 .
+export HF_HOME="/gpfs/scratch/ehu26/ehu129750/hf_cache"
+
+rsync -avPL /scratch/jonapa/hf_cache/hub/models--HiTZ--Latxa-Llama-3.1-70B-Instruct-v2/snapshots/6e83f98c44fb4e77eb1071ae846a028eaa571c8b/ ehu129750@transfer1.bsc.es:/gpfs/scratch/ehu26/ehu129750/hf_cache/Latxa-Llama-3.1-70B-Instruct-v2/
 
 #########################################################
 
 # MN5
-salloc --account=ehpc678 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00 --gres=gpu:1
-salloc --account=ehpc678 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00
+salloc --account=ehu26 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00 --gres=gpu:1
+salloc --account=ehu26 --qos=acc_interactive --cpus-per-task=20 --time=2:00:00
 
 #########################################################
 

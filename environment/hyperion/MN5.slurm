@@ -70,7 +70,7 @@ git clone https://github.com/pytorch/pytorch.git
 cd pytorch/
 # https://github.com/pytorch/pytorch/releases
 git checkout v2.13.0 
-# 2.14.0 is the latest, flash attention: https://github.com/Dao-AILab/flash-attention/issues/2863
+# 2.14.0 is the latest, flash attention: https://github.com/Dao-AILab/flash-attention/issues/2863, fixed https://github.com/Dao-AILab/flash-attention/tree/fa4-v4.0.0.beta32
 git submodule sync
 git submodule update --init --recursive
 
@@ -510,9 +510,9 @@ conda deactivate
 # conda-unpack
 # source build-env/bin/deactivate
 
-# scp /scratch/jonapa/build-env.tar.gz  ehu129750@transfer1.bsc.es:/gpfs/scratch/ehpc678/jonapa
+# scp /scratch/jonapa/build-env.tar.gz  ehu129750@transfer1.bsc.es:/gpfs/scratch/ehu26/ehu129750
 #### cpubash
-# cd /gpfs/scratch/ehpc678/jonapa
+# cd /gpfs/scratch/ehu26/ehu129750/
 # mkdir build-env
 # tar -xzf build-env.tar.gz -C build-env
 # source build-env/bin/activate
