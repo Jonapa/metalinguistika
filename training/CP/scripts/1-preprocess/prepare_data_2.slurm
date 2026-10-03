@@ -31,6 +31,6 @@ export AXOLOTL_DO_NOT_TRACK=1
 export OMP_NUM_THREADS=16
 export PYTHONPATH=${projectPath}/training/CP/scripts/0-train_configs/common:$PYTHONPATH
 
-python -m axolotl.cli.preprocess "${projectPath}/training/CP/scripts/0-train_configs/train_config.yaml"
+python -m axolotl.cli.preprocess "${projectPath}/training/CP/scripts/0-train_configs/train_config_2.yaml"
 
 source /gpfs/scratch/ehu26/ehu129750/build-env/bin/deactivate

@@ -44,7 +44,7 @@ dataset_prepared_path: /gpfs/scratch/ehu26/ehu129750/metalinguistika/training/CP
 
 shuffle_merged_datasets: true
 
-output_dir: /gpfs/scratch/ehu26/ehu129750/metalinguistika/training/CP/cache/model/CP
+output_dir: /gpfs/scratch/ehu26/ehu129750/metalinguistika/training/CP/cache/model/CP_2
 
 sequence_len: 8192
 excess_length_strategy: truncate
@@ -62,7 +62,7 @@ warmup_ratio: 0.1
 micro_batch_size: 1
 num_epochs: 1
 # sweep 5e-6, and X4 data
-learning_rate: 1e-5
+learning_rate: 5e-6
 max_grad_norm: 1.0
 cosine_min_lr_ratio: 0.1
 
