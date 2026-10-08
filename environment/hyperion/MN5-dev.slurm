@@ -404,6 +404,8 @@ for i in {1..100}; do echo -n '#'; done; echo
 git clone https://github.com/vllm-project/vllm.git
 cd vllm/
 # https://github.com/vllm-project/vllm/releases
+# TODO: wait for release, which bumps transformers 5.19.0
+# https://github.com/vllm-project/vllm/pull/60381
 git checkout v0.31.0
 # Pin the version: a dirty tree makes setuptools-scm stamp the build date into it, and a build that crosses midnight then fails pip's filename check.
 export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_VLLM=0.31.0
