@@ -2,11 +2,15 @@
 #SBATCH --job-name=MN5
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=100GB
-#SBATCH --account=hitz-exclusive
-#SBATCH --partition=hitz-exclusive
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=128GB
+#SBATCH --qos=long
 #SBATCH --time=48:00:00
+
+
+
+#--account=hitz-exclusive
+#--partition=hitz-exclusive
 
 module load Miniforge3
 module load CUDA/13.0.0
@@ -17,7 +21,7 @@ echo "CUDA_HOME: $CUDA_HOME"
 ${CUDA_HOME}/bin/nvcc --version # verify that nvcc is in your CUDA_HOME
 
 # With compilers
-    # CUDA 12.8/12.9 -> Up to GCC 14.x is supported (with 14 fails, falling back to 13)
+    # CUDA 12.8/12.9 -> Up to GCC 14.x is supported (with 14 fails, falling back to 13 (<14))
     # https://docs.nvidia.com/cuda/archive/12.9.0/cuda-installation-guide-linux/index.html#system-requirements
     # https://docs.nvidia.com/cuda/archive/12.9.0/cuda-installation-guide-linux/index.html#host-compiler-support-policy
 # setuptools: 
@@ -30,7 +34,8 @@ conda create -y -n build-env -c conda-forge \
     "setuptools<81.0.0" \
     rust \
     setuptools-rust \
-    conda-pack
+    conda-pack \
+    elfutils # vllm: fatal error: elfutils/libdwfl.h: No such file or directory 
 
 
 
@@ -90,10 +95,8 @@ git submodule update --init --recursive
 # vllm
     # numpy==2.3.5 (inferred version from vllm pip install)
     # protobuf==6.33.6 (protobuf!=6.30.*,!=6.31.*,!=6.32.*,!=6.33.0.*,!=6.33.1.*,!=6.33.2.*,!=6.33.3.*,!=6.33.4.*,>=5.29.6, inferred version from vllm pip install, vllm most restrictive package)
-    # apache-tvm-ffi==0.1.12
-        # flash-attn-4 apache-tvm-ffi<0.2,>=0.1.12 (reduced to beta19 https://github.com/Dao-AILab/flash-attention/commit/00469573f86e5bc9bfdf83d5073649c8a6638409)
-        # tilelang==0.1.13 apache-tvm-ffi>=0.1.11,<0.1.13
-        # tokenspeed-mla==0.1.9
+    # apache-tvm-ffi==0.1.11
+        # flash-attn-4 (fa4-v4.0.0.beta34 -- Allow apache-tvm-ffi 0.1.11: https://github.com/Dao-AILab/flash-attention/pull/2948)
     # nvidia-cutlass-dsl[cu13]==4.7.1 (fixed in requirements/cuda.txt)
 # axolotl
     # tomlkit 0.13.3 (inferred version from vllm pip install)
@@ -105,7 +108,7 @@ git submodule update --init --recursive
     # pandas 2.3.3 (inferred version from vllm pip install)
 
 # Avoid uninstall
-"$PY" -m pip install numpy==2.3.5 protobuf==6.33.6 apache-tvm-ffi==0.1.12 "nvidia-cutlass-dsl[cu13]==4.7.1" tomlkit==0.13.3 "fsspec==2025.10.0" "starlette<2.0.0,>=1.0.1" pandas==2.3.3
+"$PY" -m pip install numpy==2.3.5 protobuf==6.33.6 apache-tvm-ffi==0.1.11 "nvidia-cutlass-dsl[cu13]==4.7.1" tomlkit==0.13.3 "fsspec==2025.10.0" "starlette<2.0.0,>=1.0.1" pandas==2.3.3
 
 "$PY" -m pip install -r requirements.txt
 "$PY" -m pip install mkl-static mkl-include
@@ -127,7 +130,7 @@ for i in {1..100}; do echo -n '#'; done; echo
 git clone https://github.com/Dao-AILab/flash-attention.git
 cd flash-attention/
 # https://github.com/Dao-AILab/flash-attention/releases
-git checkout fa4-v4.0.0.beta33
+git checkout fa4-v4.0.0.beta34
 
 export FLASH_ATTENTION_FORCE_BUILD=TRUE
 export FLASH_ATTENTION_SKIP_CUDA_BUILD=FALSE
@@ -313,7 +316,7 @@ for i in {1..100}; do echo -n '#'; done; echo
 git clone https://github.com/huggingface/transformers.git
 cd transformers/
 # https://github.com/huggingface/transformers/releases
-git checkout v5.18.0
+git checkout v5.19.0
 
 "$PY" -m pip install --no-build-isolation .
 
@@ -401,20 +404,19 @@ for i in {1..100}; do echo -n '#'; done; echo
 git clone https://github.com/vllm-project/vllm.git
 cd vllm/
 # https://github.com/vllm-project/vllm/releases
-git checkout v0.30.0
-
+git checkout v0.31.0
 # Pin the version: a dirty tree makes setuptools-scm stamp the build date into it, and a build that crosses midnight then fails pip's filename check.
-export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_VLLM=0.30.0
+export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_VLLM=0.31.0
+
+# vllm: fatal error: elfutils/libdwfl.h: No such file or directory 
+ls $CONDA_PREFIX/include/elfutils/libdwfl.h
+export CPATH="$CONDA_PREFIX/include:$CPATH"
+export LIBRARY_PATH="$CONDA_PREFIX/lib:$LIBRARY_PATH"
+export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"
 
 # For building pyproject.toml
 "$PY" -m pip install maturin pdm-backend flit_core meson-python hatchling hatch-fancy-pypi-readme hatch-vcs poetry-core poetry-dynamic-versioning setuptools-scm
-"$PY" use_existing_torch.py
-# force the version of apache-tvm-ffi to 0.1.12
-sed -i -E 's/^(apache[-_.]tvm[-_.]ffi)[[:space:]]*[=<>!~]=?[^#;[:space:]]*/\1==0.1.12/I' requirements/cuda.txt
-# force the version of tilelang to 0.1.13
-sed -i -E 's/^(tilelang)[[:space:]]*[=<>!~]=?[^#;[:space:]]*/\1==0.1.13/I' requirements/cuda.txt
-# force the version of tokenspeed-mla to 0.1.9
-sed -i -E 's/^(tokenspeed[-_.]mla)[[:space:]]*[=<>!~]=?[^#;[:space:]]*/\1==0.1.9/I' requirements/cuda.txt
+"$PY" tools/use_existing_torch.py
 "$PY" -m pip install -r requirements/build/cuda.txt
 # https://vllm.ai/ 
 # See quickstart command

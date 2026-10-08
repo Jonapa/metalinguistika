@@ -1,0 +1,261 @@
+id,question,answer,rule,conflict,correction,glossary,Iturriak
+0,"Adierazi beheko esaldia zuzena ala okerra den eta, hala badagokio:
+
+1. Identifikatu zer arau edo gramatika-printzipio urratzen den
+2. Azaldu arau horren eta esaldiaren arteko gatazka.
+3. Eman zuzenketa bat (edo gehiago).
+
+Ahal duzun heinean terminologia linguistiko zehatza erabili.
+
+Esaldia: ""{question}""","Erantzunak esan behar du esaldia {answer:zuzena,okerra} dela.",Erantzunak honako hau esan behar du: {rule}.,"Erantzunak perpausak hausten duen araua identifikatu behar du. Horretarako, honako guztiak esan behar ditu: {conflict}",Erantzunak zuzenketa hauetako bat gutxienez eman behar du: {correction}.,Kontuan izan hurrengo baliokidetzak: {glossary},
+1,"Nire arrebako iritziz, Fisikako azterketa oso zaila izan da.",0,"Euskaraz genitibozko bi kasu daude: NOREN eta NONGO. 
+
+NOREN kasuak jabetza adierazten du.
+
+NONGO kasua lekuzko zein denborazko funtzioa duenean erabiltzen da. ","""arrebako"" izenlagunak ez du kokapena adierazten, jabetza baizik.
+","Nire arrebaren iritziz, Fisikako azterketa oso zaila izan da.","NONGO kasua = leku-genitiboa = leku-denborazko genitiboa
+NOREN kasua = genitiboa = edutezko genitiboa = jabego-genitiboa","EGLU I (199-208)
+EBE (-ko eta -en izenlagunak (NONGO eta NOREN))"
+2,"Katua etxearen atzekaldean zegoen ezkutatuta, ekaitzaren beldur zelako.",0,"Euskara batuan ""atzeko aldean"" edo ""atzealdean"" dira forma zuzenak.","""atzekaldean"" ez dago onartuta.","Katua etxearen atzeko aldean zegoen ezkutatuta, ekaitzaren beldur zelako.
+
+Katua etxearen atzealdean zegoen ezkutatuta, ekaitzaren beldur zelako.",,"Euskaltzaindiaren 3. araua: aurrealde, atzealde"
+3,Hire laguna leher eginda zegoala esan hidan.,0,Menderagailua duten aditzek ez dute alokutiborik eramaten.,"""zegoala"" forma alokutiboak menderagailua darama.",Hire laguna leher eginda zegoela esan hidan.,adizki alokutiboa = hikako adizkia,"EGLU I (391)
+EGLU VI (6)
+EBE (alokutiboa) "
+4,"Euria egin ezkero, zinemara joango naiz ""Karmele"" filma ikustera.",0,"Baldintzazko perpausetan ""-(e)z gero"" postposizioa erabiltzen da, eta beti bi hitzetan idatzi behar da.","""ezkero"" loturik idatzita agertzen da.","Euria eginez gero, zinemara joango naiz 'Karmele' filma ikustera.",,Euskaltzaindiaren 26. araua: -z gero 
+5,Dator gure amona.,0,"Perpausari hasiera aditz sintetikoak ematen dionean, beti behar du ""ba-"" edo ""ez"".",“dator” aditz sintetikoa perpausaren hasieran agertzen da eta “ba-” aurrizkirik gabe idatzi da.,Badator gure amona.,adizki sintetikoa = adizki trinkoa,EGLU I (19)
+6,"Atzo nire urtebetetzea izan zenez, gutizi batzuk ekarri ditut ospatzeko.",0,"a itsatsia duten hitzen ondoren determinatzaileren bat edo adjektibo bat jartzen denean, amaierako ""-a"" hori ez da galtzen.","""gutizia"" hitzak berezkoa du amaierako ""-a"", eta ""batzuk"" zenbatzailea gehitzean ezabatu egin da.","Atzo nire urtebetetzea izan zenez, gutizia batzuk ekarri ditut ospatzeko.","determinatzailea = artikulua = mugatzailea = zenbatzailea
+adjektiboa = izenondoa","Euskaltzaindiaren Hiztegia: gutizia 
+EBE (a itsatsia) 
+EHULKU (-a itsatsia eta mugagabea) "
+7,"Olatzek kontatutakoa egia balitz, asko poztuko gara.",0,"Alegiazko baldintzak ezin du indikatiboko ondorioa eraman, ezta alderantziz ere. ","Baldintzan alegiazko adizkia erabili da (""balitz""), eta ondorioan, aldiz, indikatibokoa (""poztuko gara""). ","Olatzek kontatutakoa egia balitz, asko poztuko ginateke.
+
+Olatzek kontatutakoa egia bada, asko poztuko gara.","baldintza-perpausa = protasia 
+ondore-perpausa = ondorio-perpausa = apodosia
+alegiazko baldintza = baldintza irreala
+ez-alegiazko baldintza = baldintza erreala
+indikatiboko adizkia = orainaldiko edo iraganeko adizkia","EGLU II (369-383)
+EBE (baldintza-perpausak) 
+Euskal Gramatika Osoa (521)"
+8,"Duela 5 urte etxea erosi genuen Galizian, eta geroztik, udaro hara joatea tradizioa bihurtu da.",0,"Perpaus baten barnean bi nor-sintagma agertzen direnean, eta horietako bat bestearen predikatu osagarria denean, ""bihurtu"" aditzak mugagabean eskatzen du predikatu osagarri hori.","""tradizioa"" osagarri predikatiboak ""-a"" mugatzailea du.","Duela 5 urte etxea erosi genuen Galizian, eta geroztik, udaro hara joatea tradizio bihurtu da.","mugatzailea = determinatzailea = artikulua
+osagarri predikatiboa = predikatu-osagarria = atributua = atribuzio-perpausa",Euskaltzaindiaren 40. araua: topiko(a) bihurtu
+9,"Bi urtetik behin, AEK-ak Korrika antolatzen du, euskararen aldeko ekitaldirik garrantzitsuena.",0,"Kasu markak zuzenean eransten zaizkio siglari, marratxorik erabili gabe. 
+
+Siglek izendapen berezi bat ordezkatzen dutenean, izen berezi gisa hartuko dute kasu marka, hau da, mugatzailerik gabe. 
+
+Letraka irakurri behar diren siglak, bokalez amaitzen dira eta, ondorioz, zuzenean eransten zaie kasu marka.","Sigla eta kasu marka marratxoaren bidez lotu dira (""AEK-ak""). 
+
+Sigla hau letraz letra irakurtzen denez (a-e-ka + k) eta izendapen berezi bat ordezkatzen duenez (Alfabetatze Euskalduntze Koordinakundea), ""-a"" mugatzailea sobran dago.","Bi urtetik behin, AEKk Korrika antolatzen du, euskararen aldeko ekitaldirik garrantzitsuena.",mugatzailea = determinatzailea = artikulua,Euskaltzaindiaren 196. araua: EBO (I). Laburtzapenak: laburdurak eta siglak
+10,"Barkatu aita, okindegira joan naiz, baina itxita zegoenez, ezin izan dut ogia erosi.",0,"Deikia koma artean jartzen da beti.
+
+","Esaldi honetan, ""aita"" deikia da eta, hortaz, koma artean idatzi beharko litzateke.","Barkatu aita, okindegira joan naiz, baina itxita zegoenez, ezin izan dut ogia erosi.",deikia = bokatiboa,EBE (puntuazio-markak) 
+11,"Nire gurasoen etxeak, oroitzapen asko ekartzen dizkit.",0,"Subjektuaren eta predikatuaren artean tartekirik ez badago, ez da komarik jartzen.",Koma “Nire gurasoen etxeak” subjektuaren eta “oroitzapen asko ekartzen dizkit” predikatuaren artean ipini da.,Nire gurasoen etxeak oroitzapen asko ekartzen dizkit.,predikatua = aditz sintagma,EBE (puntuazio-markak) 
+12,"Irakasleak esan zuen, Matematikako azterketa otsailaren 11n izango zela.",0,"Aditza eta osagarri zuzenaren artean tartekirik ez badago, ez da komarik jartzen.","“Esan zuen” aditzaren ondoren, eta osagarri zuzenaren aurretik (""azterketa otsailaren 11n izango zela""), koma ipini da.",Irakasleak esan zuen Matematikako azterketa otsailaren 11n izango zela.,osagarri zuzena = objektu zuzena = perpaus osagarria,EBE (puntuazio-markak) 
+13,Ez du merezi tontakeria horregatik haserretzeak.,0,"""merezi izan"" aditz lokuzioaren osagarria aditz-izen bat bada, absolutiboa erabili behar da nahitaez.","Ergatiboa (""haserretzeak"") erabili da absolutiboaren (""haserretzea"") ordez.",Ez du merezi tontakeria horregatik haserretzea.,"osagarri zuzena = objektu zuzena
+ergatiboa = NORK kasua
+absolutiboa = NOR kasua",Euskaltzaindiaren 31. araua: ekartzea merezi du 
+14,"Ezin izan dut kolore urdineko soinekoa erosi, ez bait dut dirurik.",0,"""bait"" partikula aditzari atxikita idazten da beti, dagokion aldaketa grafikoa eginik.","Esaldia ez da zuzena, ""bait"" eta aditza bereiz idatzi baitira.","Ezin izan dut kolore urdineko soinekoa erosi, ez baitut dirurik.",,"Euskaltzaindiaren 2. araua: baitu, baikara, bainaiz"
+15,Ilusio asko egin zidan zure deiak!,0,"Izen neurgaitzak ezin dira zenbatu; horregatik, ez da egokia ""asko"" bezalako zenbatzaileak erabiltzea. ","""ilusioa"" izen neurgaitza denez, ez da zuzena ""asko"" zenbatzailea erabiltzea.","Ilusio handia egin zidan zure deiak!
+
+Sekulako ilusioa egin zidan zure deiak!
+
+Izugarrizko ilusioa egin zidan zure deiak!
+",izen neurgaitzak ≠ izen zenbakaitzak,"EGLU I (32-35, 145)
+EBE (izen zenbakarriak / izen zenbakaitzak)"
+16,Laugarren solairuko bizilagunak ez dira inoiz beren seme-alabetaz arduratzen.,0,"Kasu instrumentalean, plurala adierazteko ""-z"" atzizkia erabiltzen da, ez ""-taz"".","“seme-alabetaz” forma ez da zuzena, kasu instrumentalean plurala adierazteko “-taz"" erabili delako, ""-z” atzizkiaren ordez.",Laugarren solairuko bizilagunak ez dira inoiz beren seme-alabez arduratzen.,"kasu instrumentala = ZEREZ kasua
+atzizkia = deklinabidea = postposzioa = kasu marka","EBE (-z/-taz) 
+Euskararen Gramatika: instrumentala"
+17,"Gaixorik zegoen arren, baina sekulako parranda egin zuen.",0,Mendeko kontzesio perpausaren eta juntaduraren arteko konbinazioa ezinezkoa da.,"Mendeko kontzesio perpausa (""Gaixorik zegoen arren"") eta ""baina"" aurkaritzako juntagailua nahastu dira esaldi berean.","Gaixorik zegoen arren, sekulako parranda egin zuen.
+
+Gaixorik zegoen, baina sekulako parranda egin zuen.",kontzesio perpausa = perpaus kontzesiboa,EGLU VI (253-257)
+18,"Bart euria eginez gero, zelaia lokaztuta egongo da.
+
+",0,"""-z gero"" motako baldintzazko perpausek ezin dute ekintza/egoera buruturik adierazi, eta ezta unean bertan jazotzen ari denik ere.","Kasu honetan, ""euria egin"" ekintza burututa dago (""bart""), beraz, ezin da erabili ""-z gero"" egiturarekin.","Bart euria egin badu, zelaia lokaztuta egongo da.",,EGLU VI (203-208)
+19,Herenegun erosi nuen tresna ez du ezertarako balio.,0,"""balio izan"" aditza NORK motakoa da, beraz, subjektuak ergatibo marka hartzen du.","Subjektua absolutiboan (""tresna"") doa, eta ergatiboan (""tresnak"") joan beharko luke.",Herenegun erosi nuen tresnak ez du ezertarako balio.,"ergatibo marka = -k kasu marka
+NORK motako aditza = ""du"" motako aditza","Euskaltzaindiaren Hiztegia: balio izan 
+"
+20,8:15etan geratu gara Matia kalean elkarrekin gosaltzeko.,0,"Orduak deklinatzean orduak pluralean jartzen dira eta minutuak, berriz, singularrean.","Minutuak pluralean deklinatu dira (""8:15etan"").",8:15ean geratu gara Matia kalean elkarrekin gosaltzeko.,,"Euskaltzaindiaren 35. araua
+EBE (orduak nola esan) "
+21,Irakasleak jakinarazi digu osteguna eta ostiralean jai izango dugula.,0,"Mugatzailea duen sintagma bat eta kasu markadun sintagma bat ""eta"" emendiozko juntagailuaren bidez juntatzea ez da gramatikala.
+
+Bi aukera daude: kasu marka bi juntagaietan agertzea edo lehenengo zatia mugagabean utzi eta bigarrenari kasu marka jartzea.","Juntaduraren lehen osagaiak ""-a"" determinatzailea darama, beraz, ez da zuzena.","Irakasleak jakinarazi digu ostegunean eta ostiralean jai izango dugula.
+
+Irakasleak jakinarazi digu ostegun eta ostiralean jai izango dugula.
+",determinatzailea = artikulua = mugatzailea,Euskaltzaindiaren 111. araua: izen sintagmen arteko juntadura dela eta
+22,Bi esne litro erosi nituen supermerkatuan arroz esnea egiteko.,0,Kantitatea adierazteko ordena zehatz bat jarraitu behar da: zenbatzailea + neurri-izena + gaia.,"Esaldi honetan, neurri-izena (""litro"") eta gaia (""esne"") alderantziz jarri dira.",Bi litro esne erosi nituen supermerkatuan arroz esnea egiteko.,,"EGLU I (115-118)
+EBE (neurri-sintagmak) "
+23,"Etxetik atera baino lehen, Esne Beltzaren kontzerturako sarrerak eros ditzazkegu.",0,"Euskara batuan ez da zuzena ""ditzazkegu"" aditz laguntzailea erabiltzea, bi pluralgilez osatuta baitago: -it- eta -z-. ","""ditzazkegu"" forma ez da zuzena.","Etxetik atera baino lehen, Esne Beltzaren kontzerturako sarrerak eros ditzakegu.",,"EBE (ditzaket/*ditzazket)
+Euskal aditz batua (25) "
+24,Badirudi lapurretan harrapatu omen zutela.,0,"Ez da zuzena bi egitura ezberdin nahastea egiantzekotasuna adierazteko esaldi berean; beraz, bietako bat aukeratu behar da.","Esaldia okerra da, hain zuzen ere, ""omen"" eta ""badirudi... (-ela)"" erabili direlako esaldi berean.","Lapurretan harrapatu omen zuten.
+
+Badirudi lapurretan harrapatu zutela.",,
+25,Ez da batere erraza benetazko lagunak egitea.,0,"""benetan"" adberbioaren izenlaguna ""benetako"" da. ","""benetazko"" ez da zuzena, ""benetaz"" adberbioa ez baita existitzen.",Ez da batere erraza benetako lagunak egitea.,,"Euskaltzaindiaren 19. araua: benetako, ohiko "
+26,Mortiarti ekoizetxeak egindako pelikula guztiak ikusitak dauzkat.,0,"""-ta"" atzizkia erantsiz eratutako partizipioa aldagaitza da, hau da, singularrean nahiz pluralean forma bera erabiltzen da.","Partizipioa pluralean erabili da: ""ikusitak"".","Mortiarti ekoizetxeak egindako pelikula guztiak ikusita dauzkat.
+
+Mortiarti ekoizetxeak egindako pelikula guztiak ikusiak dauzkat.",partizipioa = aditz-partizipioa = aditz-adjketiboa,"EGLU VII (313-321)
+EBE (partizipioa atribuzio-perpausean) 
+EGLU I (165)"
+27,"Tenperaturari dagokionean, bero handia egingo du eguerdi aldean.",0,"""dagokionean"" denborazko esaldietan erabiltzen da eta perpaus nagusiko ekintza noiz gertatzen den adierazten du. 
+
+""dagokionez"" moduzkoa da, eta gai bati buruz ari garela adierazteko edo mintzagai berri bat sartzeko erabili ohi da.","Esaldia ez da denborazko perpausa, beraz, ez da zuzena ""dagokionean"" erabiltzea.","Tenperaturari dagokionez, bero handia egingo du eguerdi aldean.",,"EBE (dagokionean ≠ dagokionez)  
+Morfosintaxiaren inguruko zalantzak eta argibideak (61)
+Euskal Gramatika Osoa (495)"
+28,"Espero nuena baino lehenago iritsi da autobusa, eta ia-ia galdu egin dut.",0,"Konparazio morfemaren ezkerretara ageri den perpauseko aditzak, agerian badago, ""-eN"" atzizkia eskatzen du eta honek ez du ""-a"" mugatzailerik behar.","Konparazioaren ezkerrean dagoen aditzak (""espero nuen"") dagoeneko ""-en"" morfema du eta ""-a"" mugatzailea erantsi zaio amaieran (""espero nuena"").","Espero nuen baino lehenago iritsi da autobusa, eta ia-ia galdu egin dut.","mugatzailea = determinatzailea = artikulua
+","Euskal Gramatika Osoa (829)
+EBE (konparazio-perpausetako arazo batzuk) 
+EGLU V (298-299)"
+29,"Ez dizkiot azalpenik eman nahi, denbora alferrik galtzea delako.",0,"Partitiboak ez du inoiz numero markarik hartzen eta, beraz, aditzak singularrean egon behar du beti, sekula ez pluralean.","Pluraleko komunztadura egin da aditzarekin (""dizkiot"").","Ez diot azalpenik eman nahi, denbora alferrik galtzea delako.",partitiboa = ZERIK kasua,"Euskaltzaindiaren 15. araua: partitiboaren erabilera okerra 
+EBE (partitiboa (-ik)) 
+EHULKU (partitiboa) "
+30,Onartezina deritzogu langileen eskubideak urratzea.,0,"""iritzi"" aditzak ""dio"" erregimena du eta, hortaz, osagarria NORI kasuan joan behar da.","Absolutiboa erabili da (""urratzea""), datiboaren ordez (""urratzeari"").",Onartezina deritzogu langileen eskubideak urratzeari.,NORI kasua = datiboa,EBE (iritzi; deritzat/deritzot)
+31,"Elurretara joan ginenean, eskularruak ekartzea ahaztu zitzaizkion.",0,"Aditz nagusiaren objektua aditz-izena denean, komunztadura singularrean egiten da.","Aditz nagusiaren objektua aditz-izena denez (""eskularruak ekartzea""), ez da zuzena pluralean jokatzea (""ahaztu zitzaizkion"").","Elurretara joan ginenean, eskularruak ekartzea ahaztu zitzaion.",,"EBE (aditz-izena)
+Euskal Gramatika Osoa (592)"
+32,Gogoak dauzkat mendira joateko eta bibak egiteko.,0,"""gogo"" hitza singularrean edo partitiboan erabili behar da beti.","""gogo"" izena pluralean erabili da: ""gogoak"".",Gogoa daukat mendira joateko eta bibak egiteko.,,"EBE (gogo) 
+Zalantza-dantza (32) 
+Euskal Gramatika Osoa (591)"
+33,Nik badaukat bizilagun bat izugarrizko zarata egiten duela.,0,"Perpaus erlatiboak egiteko ""-(e)n"" menderagailua erabili ohi da.","Perpaus erlatiboa dugu, eta horrelako esaldietan ""-(e)na"" atzizkia erabiltzen da, eta ez ""-(e)la"".",Nik badaukat bizilagun bat izugarrizko zarata egiten duena.,,EBE (-(e)la/-(e)na) 
+34,Kontatu al dizuet nire ilobari gertatu zitzaiona?,0,"Erdaraz, ""zer"" eta ""zenbat"" galdetzaileekin osatutako perpausek erlatiboak diruditen arren, euskaraz zehar-galderaren bidez idatzi behar dira.","Perpaus erlatiboa erabili da (""zitzaiona"") zehar-galderaren ordez.",Kontatu al dizuet zer gertatu zitzaion nire ilobari?,,"Euskal Gramatika Osoa (737)
+EBE (erlatiboa eta zehar-galdera) 
+Kalkoen behatokia: erlatiboak / zehar-galdera 
+Morfosintaxiaren inguruko zalantzak eta argibideak (47-48)
+Kalko okerrak (20) "
+35,Gazteek geroz eta alkohol gutxiago edaten dutela agertarazi du inkesta batek.,0,"Aditz arazleak aditzoinari ""-arazi"" atzizkia erantsiz eratzen dira, eta ""agertu"" hitzaren aditzoina ""ager"" da, ez ""agert"".","""agertarazi"" forma erabili da.",Gazteek geroz eta alkohol gutxiago edaten dutela agerrarazi du inkesta batek.,,EBE (agertarazi/agerrarazi)
+36,"Ikaskide guztiek egin dituzte etxeko lanak, nik ezik.",0,"""izan ezik"" formula osoa erabili behar da, eta ez ""ezik"" bakarrik.","""ezik"" bakarrik erabili da.","Ikaskide guztiek egin dituzte etxeko lanak, nik izan ezik.",,"Euskaltzaindiaren 16. araua 
+Morfosintaxiaren inguruko zalantzak eta argibideak (65)
+EBE (ezik: izan ezik/ezik)
+EHULKU (izan ezik/ezik) "
+37,"Dagoeneko bukatuko zen filma; beraz, has gaitezen afaria prestatzen, laster izango baitira etxean.",0,"""dagoeneko"" aditzondoak ziurtzat jotzen du adierazitakoa.
+
+""honezkero"" aditzondoak susmo edo ziurtasunik eza adierazten du.","""bukatuko zen"" aditzak argi uzten du igorlea ez dagoela guztiz ziur filma bukatu ote den. Horregatik, ez da egokia erabateko ziurtasuna adierazten duen ""dagoeneko"" aditzondoa erabiltzea.","Honezkero bukatuko zen filma.
+
+Dagoeneko bukatu da filma.",aditzondoa = adberbioa,"EBE (dagoeneko ≠ honezkero)
+Morfosintaxiaren inguruko zalantzak eta argibideak (61)
+Euskal Gramatika Osoa (915)"
+38,"Udako ikastaroetan izena emateko epea apirilaren 11an amaituko da, eguerdiko hamabietan.",0,"""hamaika"" A letraz amaitzen denez, ez da zuzena beste ""-a"" bat eranstea.","""-a"" erantsi zaio 11 zenbakiari: ""11an"".","Udako ikastaroetan izena emateko epea apirilaren 11n amaituko da, eguerdiko hamabietan.",,"EBE (data nola eman)
+EBE (zenbaki kardinalak) 
+Euskal Gramatika Osoa (157-158)"
+39,Ez dugu zertan kezkatu beharrik; ziur nago dena ondo baino hobeto aterako dela.,0,"Beharrik eza adierazteko bi modu daude, ""zertan"" edo ""behar izan"" aditzaz baliatuz, baina bi egitura horiek ezin dira nahastu.","Bateraezinak diren bi egitura nahastu dira: ""zertan"" eta ""beharrik"".","Ez dugu zertan kezkatu; ziur nago dena ondo baino hobeto aterako dela.
+
+Ez dugu kezkatu beharrik; ziur nago dena ondo baino hobeto aterako dela.",,"EBE (behar izan) 
+Euskal Gramatika Osoa (739)"
+40,"Langile guztiek, zuzendari nagusiak barne, lan hitzarmen berria sinatu dute gaur goizean.",0,"NOR kasuan joaten da ""barne""ren ezkerrean dagoen hitza, aurreko erreferentea edozein kasutan dela ere.","""barne""ren aurreko hitza ergatiboan idatzi da, eta ez absolutiboan.","Langile guztiek, zuzendari nagusia barne, lan hitzarmen berria sinatu dute gaur goizean.","NOR kasua = absolutiboa
+ergatiboa = NORK kasua","#ElhuyarrenGomendioak («Barne»ren erabilera)
+EBE ((*-en) barne egon) "
+41,Nik badaukat bizilagun bat larunbat gauetan izugarrizko zarata egiten duela.,0,"Perpaus erlatiboak egiteko ""-(e)n"" menderagailua erabili ohi da.","Perpaus erlatiboa dugu, eta horrelako esaldietan ""-(e)na"" atzizkia erabiltzen da, eta ez ""-(e)la"".",Nik badaukat bizilagun bat larunbat gauetan izugarrizko zarata egiten duena.,,EBE (-(e)la/-(e)na) 
+42,"Unaiek, Mikelek eta hirurok aste bukaeran hondartzara joan eta piragua batzuk alokatzeko asmoa dugu.",0,Diptongoz bukatzen diren izen bereziak izen arruntak bailiran deklinatzen dira eta kasu marka zuzenean eransten zaie.,"""Unai"" izenari ""-e-"" epentetikoa erantsi zaio kasu markaren aurretik (""Unaiek""), baina diptongoz amaitzen denez, kasu marka zuzenean erantsi beharko litzaioke (""Unaik"").","Unaik, Mikelek eta hirurok aste bukaeran hondartzara joan eta piragua batzuk alokatzeko asmoa dugu.",izen berezia = pertsona izena = antroponimoa,"EBE (diptongoz (-ai, -ei, -oi, -au, -eu) bukatzen diren izenen deklinabidea)"
+43,"Idazle hori jatorriz Azpeitikoa da, baina urteak dira Hondarribin bizi dela.",0,"Zenbait toponimo izen arruntak bezala deklinatzen dira, eta amaierako ""-a"" mugatzailea galtzen dute, NON kasuan izan ezik.","""Hondarribin"" NON kasuan dago eta ""-a"" mugatzailea izan beharko luke, baina ezabatu egin da.","Idazle hori jatorriz Azpeitikoa da, baina urteak dira Hondarribian bizi dela.","toponimoa = leku-izen berezia
+determinatzailea = artikulua = mugatzailea
+NON kasua = inesiboa","EBE (izen berezi artikuludunak eta a itsatsidunak)
+Euskal Gramatika Osoa (349-351)"
+44,"Anek eta biok aterki bana ekarri ditugu, baina, azkenean, eguzkiak gogor jo du goiz osoan.",0,"""bana"" banatzailearekin komunztadura singularrean egiten da.","""bana"" hitzarekin komunztadura pluralean egin da: ""aterki bana ekarri ditugu"".","Anek eta biok aterki bana ekarri dugu, baina, azkenean, eguzkiak gogor jo du goiz osoan.",,"Euskal Gramatika Laburra: Perpaus Bakuna (103-104)
+EGLU I (137-138)
+EBE (zenbatzaile banatzaileak)
+Euskal Gramatika Osoa (163-164)"
+45,"Motxila bizkarrean hartu eta eskolara abiatu aurretik, goserik ez zuen arren, laranja zuku osoa edan zuen, amak hala aginduta.",0,"Zatigarriak diren gaiekin soilik erabili daiteke ""oso"" zenbatzailea.","""zukua"" ez da zatiezina, beraz, ezin da ""oso"" zenbatzailea erabili.","Motxila bizkarrean hartu eta eskolara abiatu aurretik, goserik ez zuen arren, laranja zuku guztia edan zuen, amak hala aginduta.",,"EGLU I (154, 3.2.3. Zenbatzaile orokorrak) 
+Euskal Gramatika Osoa (188)"
+46,"Irakurmenari dagozkion galderei erantzun ostean, ordubete bat izango duzu gainontzeko ariketak egiteko.",0,"Denbora-izen bati ""-bete"" erantsiz osaturiko hitzek ez dute zenbatzailerik hartzen, ""-bete"" horrek ""bat"" esan nahi baitu.","""ordubete"" hitzarekin ""bat"" zenbatzailea erabili du.","Irakurmenari dagozkion galderei erantzun ostean, ordubete izango duzu gainontzeko ariketak egiteko.",,"EBE ((-) bete) 
+Morfologiaren inguruko zalantzak eta argibideak (140-141) 
+Euskal Gramatika Osoa (180-181)"
+47,Nire alabak ipuinak idazten olerkiak eta kantuak idazten adina sormena du.,0,"""adina"" konparazio-partikulak izen neurgaitzekin ""-ko"" atzizkia hartzen du.","""sormena"" izen neurgaitza da, baina ""adina"" erabili da, ""adinako"" hitzaren ordez.",Nire alabak ipuinak idazten olerkiak eta kantuak idazten adinako sormena du.,,"Euskal Gramatika Osoa (111, 210, 826-827)"
+48,Nire ahizpak txiki-txikitatik oso argi izan du handitan biologa izan nahi duela.,0,Adjektiboek ez dute genero gramatikalik. Erdaratik hartutako adjektiboen kasuan ere forma bakarra erabiliko da maskulinorako nahiz femeninorako. Jatorrizko hizkuntzan maskulinoari dagokion forma hartzen da euskararako.,"""biologa"" gaztelaniako forma femeninoa erabili da.",Nire ahizpak txiki-txikitatik oso argi izan du handitan biologoa izan nahi duela.,adjektibo = izenondo,"EBE (izenondoa eta generoa) 
+EGLU I (36-37, 1.3. Jeneroa euskaraz) 
+Euskal Gramatika Osoa (114)"
+49,Zin dagizut ez dudala neuk idatzi arbeleko mezu hori; ni klasera sartu naizerako hortxe zegoen.,0,Ezezko perpausetan pertsona-izenordain arrunta erabili behar da.,"Ezezko perpausa izan arren, pertsona-izenordain indartua erabili da: ""neuk"".",Zin dagizut ez dudala nik idatzi arbeleko mezu hori; ni klasera sartu naizerako hortxe zegoen.,pertsona-izenordain = izenordain,"Euskal Gramatika Osoa (121)
+EBE (pertsona-izenordain arruntak / pertsona-izenordain indartuak)
+Euskal Gramatika Laburra: Perpaus Bakuna (53-58)"
+50,Hiriko bi liburutegi publikoek zortzi milana liburu dituzte euren apalategietan ikasleen eskura.,0,"Zenbatzaile banatzaileak osatzean, ""mila"" zenbatzaileak ezin dezake ""-na"" atzizkia hartu, beraz, atzizkia kardinalari eransten zaio.","""mila"" zenbatzaileari ""-na"" atzizkia erantsi zaio: ""milana"".",Hiriko bi liburutegi publikoek zortzina mila liburu dituzte euren apalategietan ikasleen eskura.,banatzaile = distributiboa,EGLU I 138-139. or.
+51,Joan den larunbatean bi mila bostehun herritar inguru bildu ziren Zumaiako hondartzak garbitzeko.,0,"Mila zenbakitik gora, ehunekoak edo hamarrekoak (bietako bat) kentzean, ""mila"" zenbakiaren ondoren ""eta"" juntagailua erabili behar da.","""Mila"" eta gero ehunekoa bakarrik agertzen da eta ez da ""eta"" erabili.",Joan den larunbatean bi mila eta bostehun herritar inguru bildu ziren Zumaiako hondartzak garbitzeko.,,"Euskaltzaindiaren 7. araua: zenbakien idazkeraz
+Euskal Gramatika Osoa (156)"
+52,"Euskal Herriko hainbat udalerritan atez-ate biltzen dira hondakinak, gaikako bilketaren portzentajeak handitzeko.",0,"Lehen osagaia deklinatuta eta bigarrena soilik daramatzaten bikoizketak bereiz idazten dira, marratxorik gabe.","Bikoizketa honetan lehenengo osagaia deklinatuta dago (""atez""), beraz, ez da zuzena marratxoz idaztea.","Euskal Herriko hainbat udalerritan atez ate biltzen dira hondakinak, gaikako bilketaren portzentajeak handitzeko.",,"Euskal Gramatika Osoa (73, 75)
+EBE (hitz elkartuen osaera eta idazkera)"
+53,"Eleberria idatzi eta gero, zenbait pertsonei eman nien irakurtzeko.",0,"""zenbait"" zenbatzaile zehaztugabeak mugagabea eskatzen du. 
+
+a itsatsia ez da galtzen mugagabean deklinatzean.","""pertsona"" hitzak a itsatsia du, hortaz, ez da zuzena mugagabean berezko ""a"" hori ezabatzea.","Eleberria idatzi eta gero, zenbait pertsonari eman nien irakurtzeko.",,"EBE (a itsatsia) 
+EHULKU (-a berezkoa duten izenen forma mugagabea) "
+54,Amak inork baino hobe ezagutzen nau eta berehala antzeman du kezkatuta nengoela.,0,"""hobe"" adjektiboa da eta ""hobeto"", berriz, adberbioa.","Kasu honetan ""hobe"" adjektiboa erabili da, baina ""hobeto"" adberbioa erabili beharko litzateke, ""NOLA"" galderari erantzuten baitio.",Amak inork baino hobeto ezagutzen nau eta berehala antzeman du kezkatuta nengoela.,"adjektiboa = izenondoa
+adberbioa = aditzondoa","EGLU I (190-191)
+EHULKU (Hobeki/Hobeto esan) 
+EBE (hobe izan) "
+55,"Hamaiketako autobusez joan ginen aireportura, baina auto-ilarak zirela eta, ia-ia hegaldia galdu genuen.",0,"Garraiobide jakin bati buruz ari garenean, hots, mugatua denean, inesiboa erabiltzen da instrumentalaren ordez.","Autobus jakin bati buruz ari gara, hain zuzen ere, ""hamaiketako"" autobusaz, beraz, ez da zuzena instrumentala erabiltzea. ","Hamaiketako autobusean joan ginen aireportura, baina auto-ilarak zirela eta, ia-ia hegaldia galdu genuen.","inesiboa = NON kasua
+instrumentala = ZEREZ kasua = ZERTAZ kasua = ZEREZ / ZERTAZ kasua","EGLU I (293)
+Euskal Gramatika Osoa (378-379)
+EBE (goizean, goizetan / goizez; trenean/trenez)
+Morfosintaxiaren inguruko zalantzak eta argibideak (183) "
+56,"Gaur goizean aita hitz eta pitz aritu da bizilagunarekin azokan, eta azkenean, barazkiak erostea ahaztu zaizkio.",0,"Aditz nagusiaren objektua aditz-izena denean, komunztadura singularrean egiten da.","Aditz nagusiaren objektua aditz-izena denez, ez da zuzena pluralean jokatzea.","Gaur goizean aita hitz eta pitz aritu da bizilagunarekin azokan, eta azkenean, barazkiak erostea ahaztu zaio.",,"EBE (aditz-izena)
+Euskal Gramatika Osoa (592)"
+57,Gaizki deritzot zuzendaritzak atzoko bileran langileon egoera kontuan izan gabe hartutako erabakia.,0,"""iritzi"" aditzak ""dio"" erregimena du, hau da, NORI kasua eskatzen du.","""zuzendaritzak hartutako erabakia"" absolutiboan jartzea ez da zuzena, ""iritzi"" aditzak ""dio"" erregimena baitu.",Gaizki deritzot zuzendaritzak atzoko bileran langileon egoera kontuan izan gabe hartutako erabakiari.,"NORI kasua = datiboa
+absolutiboa = NOR kasua",Euskal Gramatika Osoa (511)
+58,Diru pixka bat utz diezadakezu? Diru-zorroa etxean ahaztu zait.,0,"Agintera gordina leuntzeko edo mesedeak eskatzeko desegokia da ahalera erabiltzea, geroaldia edo baldintza-ondorioa erabili beharrean.","Ahalera erabili da mesedea eskatzeko ""utz diezadakezu"".","Diru pixka bat utziko zenidake? Diru-zorroa etxean ahaztu zait.
+
+Diru pixka bat utziko (al) didazu? Diru-zorroa etxean ahaztu zait.
+
+Diru pixka bat utziko bazenit... Diru-zorroa etxean ahaztu zait.",,"Kalko okerrak (52) 
+EBE (ahalera eta kalkoak) "
+59,Hondarribiko inkestatuen ia % 56ak alarde parekide bakarraren alde egin dute.,0,"Ehunekoetan, zenbakia mugagabean jokatzen da, hau da, ez darama artikulurik.","Zenbakiari artikulua erantsi zaio: ""% 56ak"".",Hondarribiko inkestatuen ia % 56k alarde parekide bakarraren alde egin dute.,artikulua = mugatzailea = determinatzailea,"Ortotipografia (45-46) 
+EBE (ehuneko (%)) 
+Euskal Gramatika Osoa (162)
+EHULKU (ehunekoak (I))  "
+60,Orioko portura arte iristeko zailtasunak izan zituzten eguraldi kaskarra eta haize bolada gogorrak zirela eta.,0,"""-raino"" atzikiak 'lekua' adierazten du; aldiz, ""-ra arte"" postposizioa 'denbora' adierazteko erabiltzen da.","Kasu honetan, ""Orioko portua"" leku bat denez, ez da egokia ""Orioko portura arte"" esatea.",Orioko porturaino iristeko zailtasunak izan zituzten eguraldi kaskarra eta haize bolada gogorrak zirela eta.,,"Euskal Gramatika Laburra: Perpaus Bakuna (476-478)
+EGLU I (267) 
+Morfosintaxiaren inguruko zalantzak eta argibideak (177-178) 
+EBE (-raino/arte) "
+61,"Nik postrea ez dut ekarri, zuek erosiko zenutelakoan.",1,,,,,
+62,Duela lau urte ezagutu genuen elkar kongresu batean.,1,,,,,
+63,Bi ordu eta erdi iraun du guztira ikuskizunak eta ikaragarri aspertu naiz.,1,,,,,
+64,Ez nuen uste horrenbesteko hotza egingo zuenik.,1,,,,,
+65,Ane bere buruarekin oso haserre zegoen izebaren urtebetetzea ahaztu zuelako.,1,,,,,
+66,Ahalik eta ondoen zainduko ditugu azokan erositako loreak.,1,,,,,
+67,"Etor dadila lehenbailehen, eta presta dezala afaria.",1,,,,,
+68,Zalantza pare bat sortu zait eta argitzea gustatuko litzaidake.,1,,,,,
+69,Bost euro besterik ez daukat poltsikoan.,1,,,,,
+70,Argindarrik gabe egon ginen eguerdiko ordu bietatik gaueko hamaikak arte.,1,,,,,
+71,"Hain triste nengoen, non ez baineukan ezertarako gogorik.",1,,,,,
+72,Balkoia ixterakoan katua kanpoan zegoela konturatu nintzen.,1,,,,,
+73,ETS musika taldeak kontzertu bat emango du Buesa Arenan 2027ko martxoaren 20an.,1,,,,,
+74,"Nik esandakoa ulertzen ez baduzue, beste modu batean azaltzen saiatuko naiz.",1,,,,,
+75,Herriko gazteak oso kezkatuta daude emantzipatzeko zailtasunak direla eta.,1,,,,,
+76,"Irakasleen ustez, ikasleok gehiago irakurri beharko genuke.",1,,,,,
+77,"Espero dut aita garaiz heltzea, bestela haur hau negarrez hasiko da.",1,,,,,
+78,Goseak zegoenak eta ondo jatea maite zuenak bazuen gure amonaren sukaldean zer dastatu eta zer edan.,1,,,,,
+79,Hura atsekabea hartu nuena istripuaren berri izan nuenean.,1,,,,,
+80,Gaur egungo gazteek ba ote daukate sare sozialik gabe bizitzerik?,1,,,,,
+81,"Donostia txiki izanagatik, metro koadroko Michelin izar gehien dituen hirietako bat da munduan.",1,,,,,
+82,Ane eta Aitorri bosna euro eman diegu litxarreriak erosteko.,1,,,,,
+83,"Hain zen burugogorra, ezen ez baitzegoen aitona iritziz aldatzeko modurik!",1,,,,,
+84,Nahiago nuke egia hasieratik esan bazenit.,1,,,,,
+85,Nik liskarra ikusi ez izanak ez du esan nahi gertatu ez denik.,1,,,,,
+86,"Nagusiaren mezua irakurri orduko, deitu egin nion telefonoz hitz egiteko.",1,,,,,
+87,"Lanez gainezka nagoenez, ez dut zuk eskatutakoa bukatzerik izan.",1,,,,,
+88,"Programatzen irakatsiko zigunik ez geneukanez, herriko informatikariarengana jo genuen laguntza eske.",1,,,,,
+89,Mezu hotz batek besarkada bero bat ordezka dezakeela pentsatzea ere!,1,,,,,
+90,"Isuna ordaindu ezean, kontua blokeatuko diote.",1,,,,,
+91,Nori eta animaliak gehien maite dituenari kosk egin behar txakur horrek!,1,,,,,
+92,"Egunero mugikorra erabiltzen duen gazte bati, zaila gerta dakioke unibertsitateko lanetan arreta ipintzea.",1,,,,,
+93,Enpresako zuzendariak langile fintzat dauka bere burua.,1,,,,,
+94,"Euria hasi zuenean, aterkia ireki eta autobus geltokirantz jo nuen, arratsaldero bezala etxera oinez joan ordez.",1,,,,,
+95,Etsaiek ekialdetik erasoko zietelakoan gudari gehienak alde hartan jarri ziren barrandan.,1,,,,,
+96,"Zure izeba zenak, frantsesez tutik ere jakin ez arren, herrira etortzen ziren turista guztiekin solasaldi luzeak izaten zituen.",1,,,,,
+97,"Zuk sinesten ez baduzu ere, izango da kontu hori sinetsiko duenik.",1,,,,,
+98,Benetan diotsut eztarriko mina arintzeko ez dagoela eztia eta limoia bezalakorik.,1,,,,,
+99,Aitonak oparitutako bizikletari zor diot inguruko bazterrak miresten ikasi izana.,1,,,,,
+100,"Bi aldeen arteko akordioa sinatu dutenez gero, greba amaitutzat eman dute langileek.",1,,,,,
+101,Egia ezkutatu nahi duten hainbatek itsutzat gauzkate.,1,,,,,
+102,Nire kuadrillak ostiraleko parranda beste hizpiderik ez du izan egunotan.,1,,,,,
+103,Txikitatik ezagutzen dutenek neska maitekor eta arduratsutzat dute Ainhoa.,1,,,,,
+104,Ezerk ez ninduke gehiago poztuko gaur bertan oporrak hartzeak baino.,1,,,,,
+105,Futbolariari izan duen belauneko lesioak galarazi dio finala jokatu ahal izatea.,1,,,,,
+106,"Portugalera joatekotan, furgoneta zeure anaiari eskatu besterik ez duzu.",1,,,,,
+107,Egunak aurrera egin ahala pazientearen egoera gero eta hobea dela diote medikuek.,1,,,,,
+108,"Lehengusua aitazulo hutsa zenez, osabarekin baino ez zuen egon nahi izaten.",1,,,,,
+109,"Beldurraren beldurrez, ez da gauza izan hitz bakar bat esateko ere.",1,,,,,
+110,Ez pentsa erabaki hau gustura hartu dudanik.,1,,,,,
+111,"Aterpetxea beteta dagoenez gero, mendizaleek ez dute non lo egin.",1,,,,,
+112,"Oier txantxetan ari zelakoan, ez zioten jaramonik egin.",1,,,,,
+113,"Donostiarrentzat urtarrilaren 20a jaieguna izanagatik, nagusiak lanera etorrarazi zuen.",1,,,,,
+114,"Gorka lanera autoz etortzera ohitu zenetik, ez du autobusa hartzen.",1,,,,,
+115,"Nire gurasoen aldean, zureak oso kirolzaleak dira.",1,,,,,
+116,Badauka oporretan dagoen bitartean txakurra zainduko dionik.,1,,,,,
+117,Zalantzarik ez izan agindutakoa beteko dugula!,1,,,,,
+118,Gaztetxoa nintzela ekin nion misteriozko eleberriak idazteari.,1,,,,,
+119,Txostenak derrigorrean ostiralerako prest egon behar du.,1,,,,,
+120,Bi aste-edo izango dira euririk egiten ez duela.,1,,,,,

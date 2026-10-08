@@ -1,4 +1,7 @@
 training/CP/cache/*
+evaluation/output/infer/*
+evaluation/output/judge/*
+evaluation/input/**/*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

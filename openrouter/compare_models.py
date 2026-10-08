@@ -6,6 +6,8 @@ to the output file you choose:
 
   <name>.html          the report: no model names, cards in random order
   <name>.<L>.json      the parsed JSON of each answer, under the same letter
+                       (repaired when the model's JSON was slightly broken)
+  <name>.<L>.raw.txt   the untouched answer, only when its JSON was broken
   <name>.mapping.json  letter -> model slug (the only place the names survive)
 
 The HTML carries no name, slug or per-model colour, so it can be read blind.
@@ -14,7 +16,7 @@ Open <name>.mapping.json when you want to know who is who.
 Requirements:  pip install requests
 
 Run:
-  python compare_models.py -g grammar/deklinabidea.md -o out/deklinabidea.html -k sk-or-...
+  python compare_models.py -g input/jagonet_0.md -o output/jagonet_0.html -k sk-or-...
 
 All three are required:
 
@@ -40,15 +42,17 @@ import requests
 
 # Slugs move fast; check openrouter.ai/models if one comes back with an error.
 MODELS = [
-    "anthropic/claude-opus-5",
-    "google/gemini-3.1-pro-preview",
-    "openai/gpt-5.6-sol",
-    "z-ai/glm-5.3",
-    "moonshotai/kimi-k3",
+    # "anthropic/claude-opus-5",
+    # "google/gemini-3.1-pro-preview",
+    # "openai/gpt-5.6-sol",
+    # "z-ai/glm-5.3",
+    # "moonshotai/kimi-k3",
     "deepseek/deepseek-v4-pro-0813",
-    "qwen/qwen3.8-max-0902",
+    "deepseek/deepseek-v4-pro",
+    "deepseek/deepseek-v4.1-flash",
+    # "qwen/qwen3.8-max-0902",
     # "meta/muse-spark-1.3",
-    "x-ai/grok-4.7",
+    # "x-ai/grok-4.7",
 ]
 
 # Routing mode, applied to every slug above:
@@ -94,36 +98,41 @@ Scan the source text for explicitly provided examples. Strip all pedagogical and
 - **Standalone Incorrect:** Incorrect sentences without a corrected counterpart go in `extracted_incorrect`. Do not invent counterparts.
 *(Note: Output an empty array `[]` for any category lacking examples).*
 
-**Step 5: Generate Synthetic Data (`synthetic_pairs`)**
-Using your reasoning as a guide, generate exactly 10 new, completely synthetic Basque sentence pairs (incorrect/corrected). 
+**Step 5: Generate Synthetic Data (`synthetic_pairs` & `synthetic_correct`)**
+*Conditional Requirement:* 
+- If you successfully extracted source examples into either `extracted_incorrect` or `extracted_pairs`, use those source mistakes as a blueprint to generate **exactly 3** new synthetic Basque sentence pairs (incorrect/corrected) in `synthetic_pairs`. Deduce the exact nature of the error from the extracted examples and replicate that specific type of mistake in your synthetic `original` sentences. In this scenario, output an empty array `[]` for `synthetic_correct`.
+- **If both `extracted_incorrect` and `extracted_pairs` are empty, DO NOT generate synthetic pairs. Instead, using the rule and your reasoning as a guide, generate **exactly 3** new, completely correct synthetic Basque sentences that demonstrate the rule, and place them in the `synthetic_correct` array. In this case, output an empty array `[]` for `synthetic_pairs`.**
 - Ensure high diversity in vocabulary, verb tenses, sentence structure, and context.
 - Do not duplicate source examples.
-- Do not include pedagogical error markers (like `*`) in the synthetic incorrect sentences.
+- Do not include pedagogical error markers (like `*`) in any synthetic incorrect sentences.
 
 ## OUTPUT SCHEMA
 
 Your output must strictly validate against the following JSON structure. Output an array of objects (one object per rule/subrule):
 
 [
- {{
-    "reasoning": "<Detailed Basque analysis and in linguistic reasoning strictly>",
-    "rule": "<Clear, Basque concise definition in rule strictly>",
+  {{
+    "reasoning": "<Detailed linguistic reasoning and analysis strictly in Basque>",
+    "rule": "<Clear, concise definition of the rule strictly in Basque>",
     "extracted_correct": [
-      "<Standalone 1 correct sentence>"
+      "<Standalone correct sentence 1>"
     ],
     "extracted_incorrect": [
-      "<Standalone 1 incorrect sentence>"
+      "<Standalone incorrect sentence 1>"
     ],
     "extracted_pairs": [
       {{
-        "original": "<Incorrect as exactly found, markers sentence stripped>",
-        "corrected": "<Corrected as exactly found sentence>"
+        "original": "<Incorrect sentence exactly as found, but with markers stripped>",
+        "corrected": "<Corrected sentence exactly as found>"
       }}
+    ],
+    "synthetic_correct": [
+        "<Synthetic correct sentence 1 demonstrating the rule>" 
     ],
     "synthetic_pairs": [
       {{
-        "original": "<Synthetic 1 incorrect markers sentence without>",
-        "corrected": "<Synthetic 1 corrected sentence>"
+        "original": "<Synthetic incorrect sentence 1 without markers>",
+        "corrected": "<Synthetic corrected sentence 1>"
       }}
     ]
   }}
@@ -185,7 +194,11 @@ def ask(slug, prompt, api_key):
         r = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {api_key}"},
-            json={"model": slug + ROUTING, "messages": [{"role": "user", "content": prompt}]},
+            json={
+                "model": slug + ROUTING,
+                "messages": [{"role": "user", "content": prompt}],
+                "reasoning": {"effort": "high"},
+            },
             timeout=900,
         )
         data = r.json()
@@ -204,41 +217,192 @@ FENCE_OPEN = re.compile(r"^```[a-zA-Z0-9_-]*\s*")
 FENCE_CLOSE = re.compile(r"\s*```\s*$")
 
 
+def _skip_ws(s, i):
+    """Index of the next character that is neither whitespace nor a comment."""
+    while i < len(s):
+        if s[i].isspace():
+            i += 1
+        elif s.startswith("//", i):
+            i = s.find("\n", i)
+            i = len(s) if i == -1 else i
+        elif s.startswith("/*", i):
+            i = s.find("*/", i + 2)
+            i = len(s) if i == -1 else i + 2
+        else:
+            break
+    return i
+
+
+def _string_end(s, i):
+    """Index of the next unescaped quote at or after i, or len(s)."""
+    while i < len(s) and s[i] != '"':
+        i += 2 if s[i] == "\\" else 1
+    return min(i, len(s))
+
+
+def _closes_string(s, j, role):
+    """Is the quote just before s[j] the real end of a string playing role
+    ('key', 'value' in an object, 'item' in an array, 'top')? Decided by
+    what follows, so quotes inside Basque sentences get escaped instead."""
+    k = _skip_ws(s, j)
+    if k >= len(s):
+        return True
+    ch, newline = s[k], "\n" in s[j:k]
+    if role == "key":
+        return ch == ":"
+    if role == "top":
+        return ch in ",:}]"
+    if ch == ("}" if role == "value" else "]"):
+        return True
+    if newline and ch in '"{[':              # a comma is missing; fixed later
+        return True
+    if ch != ",":
+        return False
+    m = _skip_ws(s, k + 1)
+    if m >= len(s) or s[m] in "}]":          # trailing comma
+        return True
+    if s[m] != '"':
+        return role == "item" and (s[m] in "{[-" or s[m].isdigit()
+                                   or s.startswith(("true", "false", "null"), m))
+    # The next token is a string: it must look like a key (object) or an item
+    # (array), otherwise the comma was part of the text.
+    after = _skip_ws(s, _string_end(s, m + 1) + 1)
+    nxt = s[after] if after < len(s) else ""
+    return nxt == ":" if role == "value" else nxt in ",]" or nxt == ""
+
+
+def repair_json(s):
+    """Best-effort fix of the usual LLM slips: // and /* */ comments, trailing
+    commas, raw newlines and unescaped quotes inside strings, and a response
+    cut off before its closing brackets."""
+    out, stack, i, n = [], [], 0, len(s)
+    role = None                                # set while inside a string
+
+    def drop_trailing_comma():
+        while out and out[-1].isspace():
+            out.pop()
+        if out and out[-1] == ",":
+            out.pop()
+
+    while i < n:
+        c = s[i]
+        if role:
+            if c == "\\":
+                out.append(s[i:i + 2])
+                i += 2
+                continue
+            if c == '"':
+                if _closes_string(s, i + 1, role):
+                    role = None
+                    out.append(c)
+                else:                          # a quote inside the text
+                    out.append('\\"')
+            elif c == "\n":
+                out.append("\\n")
+            elif c == "\t":
+                out.append("\\t")
+            elif c != "\r":
+                out.append(c)
+            i += 1
+            continue
+
+        if s.startswith("//", i):
+            i = s.find("\n", i)
+            i = n if i == -1 else i
+            continue
+        if s.startswith("/*", i):
+            i = s.find("*/", i + 2)
+            i = n if i == -1 else i + 2
+            continue
+        top = stack[-1] if stack else None
+        if c == '"':
+            role = ("top" if top is None else "item" if top[0] == "]"
+                    else "key" if top[1] == "key" else "value")
+        elif c == "{":
+            stack.append(["}", "key"])
+        elif c == "[":
+            stack.append(["]", None])
+        elif c in "]}":
+            drop_trailing_comma()
+            if stack:
+                stack.pop()
+        elif top and top[0] == "}" and c in ":,":
+            top[1] = "value" if c == ":" else "key"
+        out.append(c)
+        i += 1
+
+    if role:                                   # truncated mid-string
+        out.append('"')
+    for closer, _ in reversed(stack):          # truncated before the end
+        drop_trailing_comma()
+        out.append(closer)
+    return "".join(out)
+
+
+def fix_at_errors(s, tries=300):
+    """json.loads, patching s where each 'Expecting ...' error points: a missing
+    comma is inserted, a stray quote before the error is escaped."""
+    for _ in range(tries):
+        try:
+            return json.loads(s)
+        except json.JSONDecodeError as e:
+            if e.msg not in ("Expecting ',' delimiter", "Expecting ':' delimiter"):
+                raise
+            pos, k = e.pos, e.pos - 1
+            while k >= 0 and s[k].isspace():
+                k -= 1
+            nxt = s[pos] if pos < len(s) else ""
+            if e.msg.startswith("Expecting ','") and k < pos - 1 and nxt in '"{[':
+                s = s[:k + 1] + "," + s[k + 1:]
+            elif k >= 0 and s[k] == '"':
+                s = s[:k] + "\\" + s[k:]
+            else:
+                raise
+    return json.loads(s)
+
+
 def parse_json(text):
-    """Return (parsed, error). Tolerates code fences and stray prose."""
+    """Return (parsed, error, repaired). Tolerates code fences and stray prose;
+    if the JSON is still invalid, tries repair_json before giving up."""
     if not isinstance(text, str) or not text.strip():
-        return None, "The model returned an empty response."
+        return None, "The model returned an empty response.", False
 
     s = text.strip()
     if s.startswith("```"):
         s = FENCE_CLOSE.sub("", FENCE_OPEN.sub("", s)).strip()
-
-    try:
-        return json.loads(s), None
-    except json.JSONDecodeError as e:
-        first_error = f"{e.msg} at line {e.lineno}, column {e.colno}"
+    candidates = [s]
 
     # Fall back to the widest bracketed span in the response.
     starts = [i for i in (s.find("["), s.find("{")) if i != -1]
     if starts:
         start = min(starts)
         end = s.rfind("]" if s[start] == "[" else "}")
-        if end > start:
-            try:
-                return json.loads(s[start:end + 1]), None
-            except json.JSONDecodeError as e:
-                return None, f"{e.msg} at line {e.lineno}, column {e.colno}"
+        candidates.append(s[start:end + 1] if end > start else s[start:])
 
-    return None, first_error
+    error = None
+    for c in candidates:
+        try:
+            return json.loads(c), None, False
+        except json.JSONDecodeError as e:
+            error = error or f"{e.msg} at line {e.lineno}, column {e.colno}"
+    for c in candidates:
+        for attempt in (repair_json(c), c):
+            try:
+                return fix_at_errors(attempt), None, True
+            except json.JSONDecodeError:
+                pass
+    return None, error, False
 
 
 def count_items(data):
-    """Return (rules, extracted_pairs, synthetic_pairs)."""
+    """Return (rules, extracted_* items, synthetic_* items)."""
     items = data if isinstance(data, list) else [data]
     objects = [i for i in items if isinstance(i, dict)]
     return (len(items),
-            sum(len(o.get("extracted_pairs") or []) for o in objects),
-            sum(len(o.get("synthetic_pairs") or []) for o in objects))
+            sum(len(o.get("extracted_pairs") or []) + len(o.get("extracted_correct") or [])
+                + len(o.get("extracted_incorrect") or []) for o in objects),
+            sum(len(o.get("synthetic_pairs") or []) + len(o.get("synthetic_correct") or [])
+                for o in objects))
 
 
 def js(value):
@@ -296,6 +460,7 @@ PAGE = r"""<!doctype html>
   .flag { border:1px solid var(--line); padding:1px 7px; }
   .flag.ok { color:var(--str); border-color:#cfe3d6; }
   .flag.bad { color:var(--bad); border-color:#efd0d0; }
+  .flag.fixed { color:var(--num); border-color:#f1dcc0; }
 
   .tabs { display:flex; gap:2px; padding:10px 20px 0; border-bottom:1px solid var(--line); }
   .tab { font:12px/1 ui-monospace, Menlo, monospace; color:var(--muted); background:none;
@@ -321,7 +486,6 @@ PAGE = r"""<!doctype html>
   .rule + .rule { margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
   .rule h3 { font-size:12px; font-weight:600; color:var(--muted); margin:0 0 6px;
              font-family:ui-monospace, Menlo, monospace; }
-  .rule p.def { margin:0 0 12px; }
   .rule details { margin:0 0 14px; }
   .rule summary { cursor:pointer; color:var(--muted); font-size:13px; }
   .rule summary + * { margin-top:8px; }
@@ -407,7 +571,7 @@ function listBlock(label, items) {
 }
 
 const KNOWN = ["rule", "reasoning", "extracted_correct", "extracted_incorrect",
-               "extracted_pairs", "synthetic_pairs"];
+               "extracted_pairs", "synthetic_pairs", "synthetic_correct"];
 
 function ruleBlock(item, i) {
   if (item === null || typeof item !== "object" || Array.isArray(item)) {
@@ -417,12 +581,13 @@ function ruleBlock(item, i) {
   return `
     <div class="rule">
       <h3>Rule ${i + 1}</h3>
-      ${item.rule ? `<p class="def">${esc(item.rule)}</p>` : `<p class="empty">No rule field.</p>`}
+      ${item.rule ? `<details><summary>Rule</summary><div>${esc(item.rule)}</div></details>` : `<p class="empty">No rule field.</p>`}
       ${item.reasoning ? `<details><summary>Reasoning</summary><div>${esc(item.reasoning)}</div></details>` : ""}
       ${pairTable("Extracted pairs", item.extracted_pairs)}
       ${listBlock("Extracted correct", item.extracted_correct)}
       ${listBlock("Extracted incorrect", item.extracted_incorrect)}
       ${pairTable("Synthetic pairs", item.synthetic_pairs)}
+      ${listBlock("Synthetic correct", item.synthetic_correct)}
       ${extra.length ? `<details><summary>Other fields: ${esc(extra.join(", "))}</summary>
         <pre class="json">${highlight(pretty(Object.fromEntries(extra.map(k => [k, item[k]]))))}</pre></details>` : ""}
     </div>`;
@@ -452,7 +617,7 @@ grid.innerHTML = RESULTS.map((r, i) => `
       <div class="meta">
         <span><b>${r.seconds}s</b> elapsed</span>
         <span><b>${r.tokens}</b> tokens</span>
-        <span class="flag ${r.json_ok ? "ok" : "bad"}">${r.json_ok ? "valid JSON" : "invalid JSON"}</span>
+        <span class="flag ${!r.json_ok ? "bad" : r.json_repaired ? "fixed" : "ok"}">${!r.json_ok ? "invalid JSON" : r.json_repaired ? "repaired JSON" : "valid JSON"}</span>
         ${r.json_ok ? `<span>${r.rules} rules · ${r.extracted} extracted · ${r.synthetic} synthetic</span>` : ""}
       </div>
     </div>
@@ -504,13 +669,15 @@ def main():
         text, seconds, tokens = ask(slug, prompt, args.api_key)
         for token in (slug, slug.split("/")[-1]):   # error messages echo the slug
             text = text.replace(token, "<model>")
-        parsed, error = parse_json(text)
+        parsed, error, repaired = parse_json(text)
         rules, extracted, synthetic = count_items(parsed) if error is None else (0, 0, 0)
-        print(f"  valid JSON - {rules} rules, {extracted} extracted, {synthetic} synthetic"
+        print(f"  {'repaired' if repaired else 'valid'} JSON - {rules} rules, "
+              f"{extracted} extracted, {synthetic} synthetic"
               if error is None else f"  invalid JSON - {error}")
         answers.append({
             "slug": slug, "text": text, "seconds": round(seconds, 1), "tokens": tokens,
             "json": parsed, "json_ok": error is None, "json_error": error or "",
+            "json_repaired": repaired,
             "rules": rules, "extracted": extracted, "synthetic": synthetic,
         })
 
@@ -524,6 +691,9 @@ def main():
         if a["json_ok"]:
             with open(f"{stem}.{letter}.json", "w", encoding="utf-8") as f:
                 json.dump(a["json"], f, ensure_ascii=False, indent=2)
+        if not a["json_ok"] or a["json_repaired"]:   # keep what the model really sent
+            with open(f"{stem}.{letter}.raw.txt", "w", encoding="utf-8") as f:
+                f.write(a["text"])
 
     with open(f"{stem}.mapping.json", "w", encoding="utf-8") as f:
         json.dump(mapping, f, ensure_ascii=False, indent=2)

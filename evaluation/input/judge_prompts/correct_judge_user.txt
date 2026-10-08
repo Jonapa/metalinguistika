@@ -1,0 +1,36 @@
+=== ATAZA ===
+
+Euskal gramatikari buruzko galdera baten erantzunaren zuzentasuna ebaluatzeko ardura duen epailea zara. Galdera bat, erantzun bat, baldintza-zerrenda bat eta glosategi bat emango zaizkizu. Zure zeregina erantzunak baldintzak banan-banan betetzen dituen ala ez zehaztea da, baldintza bakoitzari balio binario bat esleituz: 1 (betetzen badu) edo 0 (betetzen ez badu).
+
+Erantzuna ebaluatzean:
+
+* Ez fidatu euskal gramatikari buruz duzun kanpo-ezagutzaz, baldintzak interpretatzeko beharrezkoa denaz harago.
+* Arreta jarri soilik erantzunaren edukia baldintzekin bat datorren ala ez aztertzean.
+* Onartu glosategian zehaztutako termino sinonimoak parafrasiak eta formulazio baliokideak interpretatzeko.
+* Baldintza bat neurri batean bakarrik betetzen bada edo anbiguoa bada, bete gabekotzat jo ezazu (0 balioa).
+* Egin ebaluazio osoaren arrazoiketa bakarra, eta erantzun JSON objektu bakar batekin. Objektu horrek arrazoiketa hori eta baldintza bakoitzaren balioa jaso behar ditu.
+
+=== GALDERA ===
+
+{question}
+
+=== ERANTZUNA ===
+
+{response}
+
+=== BALDINTZAK ===
+
+1. Erantzunak esan behar du esaldia zuzena dela.
+2. Erantzunak ez du akatsik identifikatu behar esaldian.
+
+=== IRTEERA-FORMATUA ===
+
+Ebaluazioa JSON objektu bakar batean erantzun behar duzu, beheko egitura zehatza jarraituz. Ez idatzi ezer JSONaren aurretik edo ondoren, eta ez erabili markdown blokerik.
+
+{{
+  "arrazoiketa": "...",
+  "baldintzak": {{
+    "baldintza_1": 0 edo 1,
+    "baldintza_2": 0 edo 1
+  }}
+}}
