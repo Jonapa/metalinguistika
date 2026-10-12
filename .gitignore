@@ -2,6 +2,7 @@ training/CP/cache/*
 evaluation/output/infer/*
 evaluation/output/judge/*
 evaluation/input/**/*.json
+slurm*.out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

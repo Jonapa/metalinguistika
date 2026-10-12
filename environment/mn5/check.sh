@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 module load cuda/13.3
 
 source /gpfs/scratch/ehu26/ehu129750/build-env/bin/activate
@@ -13,6 +15,7 @@ export CMAKE_PREFIX_PATH=$(dirname $(which python))
 export TRITON_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.triton
 export TORCHINDUCTOR_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.inductor
 export CUDA_CACHE_PATH=/gpfs/scratch/ehu26/ehu129750/.cache/.nv
+export TORCH_EXTENSIONS_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/torch_extensions
 
 for i in {1..100}; do echo -n '#'; done; echo
 axolotl --help
