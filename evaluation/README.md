@@ -106,6 +106,7 @@ JUDGE_MODELS=(
     "google/gemini-3.1-pro-preview"
     "openai/gpt-6.1-sol"
     "anthropic/claude-sonnet-5.5"
+    "google/gemini-4-argon"
 )
 
 API_KEY="${OPENROUTER_API_KEY:-sk-or-xxxx}"   # env var takes precedence

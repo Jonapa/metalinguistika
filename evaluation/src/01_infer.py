@@ -9,15 +9,20 @@ import requests
 from tqdm import tqdm
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+# Only route to these providers; empty means any provider
+PROVIDERS = ["google-vertex/global", "openai", "anthropic", "deepseek"]
 
 
 def query_openrouter(messages, model, api_key, max_retries=3):
+    body = {"model": model, "messages": messages, "reasoning": {"effort": "high"}}
+    if PROVIDERS:
+        body["provider"] = {"only": PROVIDERS}
     for attempt in range(1, max_retries + 1):
         try:
             resp = requests.post(
                 OPENROUTER_URL,
                 headers={"Authorization": f"Bearer {api_key}"},
-                json={"model": model, "messages": messages, "reasoning": {"effort": "high"}},
+                json=body,
                 timeout=900,
             )
             resp.raise_for_status()

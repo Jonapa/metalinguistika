@@ -1,6 +1,7 @@
 training/CP/cache/*
 evaluation/output/infer/*
 evaluation/output/judge/*
+evaluation/output/results/*
 evaluation/input/**/*.json
 slurm*.out
 
