@@ -9,14 +9,23 @@ import requests
 from tqdm import tqdm
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-# Only route to these providers; empty means any provider
-PROVIDERS = ["google-vertex/global", "openai", "anthropic", "deepseek"]
+# Model -> the only providers it may be routed to; an empty list means any provider.
+# Same routing as openrouter/src/compare_models.py
+MODELS = {
+    "deepseek/deepseek-v4.1-flash-1017": ["deepseek"],
+    "deepseek/deepseek-v4-pro-0813":     ["deepseek"],
+
+    "openai/gpt-6.1-sol":                ["openai"],
+    "anthropic/claude-sonnet-5.5":       ["anthropic"],
+    "google/gemini-4-argon":             ["google-vertex/global"],
+    "google/gemini-3.1-pro-preview":     ["google-vertex/global"],
+}
 
 
 def query_openrouter(messages, model, api_key, max_retries=3):
     body = {"model": model, "messages": messages, "reasoning": {"effort": "high"}}
-    if PROVIDERS:
-        body["provider"] = {"only": PROVIDERS}
+    if MODELS[model]:
+        body["provider"] = {"only": MODELS[model]}
     for attempt in range(1, max_retries + 1):
         try:
             resp = requests.post(
@@ -41,6 +50,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", required=True)
     parser.add_argument("--api-key", default=os.environ.get("OPENROUTER_API_KEY"))
     args = parser.parse_args()
+    if args.model not in MODELS:
+        parser.error(f"--model must be one of: {', '.join(MODELS)}")
 
     # Resume from the output if it exists: rows without a response are (re)queried
     path = args.output_path if args.output_path.exists() else args.input_path

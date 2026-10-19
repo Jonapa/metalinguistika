@@ -3,6 +3,8 @@ evaluation/output/infer/*
 evaluation/output/judge/*
 evaluation/output/results/*
 evaluation/input/**/*.json
+openrouter/input/*.md
+openrouter/output/**/*.json
 slurm*.out
 
 # Byte-compiled / optimized / DLL files

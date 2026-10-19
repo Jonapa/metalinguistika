@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="eu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datu sintetikoen anotatzailea</title>
+<style>
+  :root{
+    --bg:#f3f3f5; --panel:#e4e4e8; --card:#fff; --ink:#1c2230; --muted:#5b6272;
+    --border:#1c2230; --code:#d6d6dc; --ok:#1e8449; --ko:#c0392b; --line:#d0d0d6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+  header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#fff;border-bottom:1px solid #ccc;position:sticky;top:0;z-index:5}
+  header h1{font-size:15px;margin:0 8px 0 0}
+  button,select{font:inherit;padding:5px 10px;border:1px solid #999;border-radius:5px;background:#fff;cursor:pointer}
+  button:hover{background:#eee}
+  button:disabled{opacity:.4;cursor:default}
+  .spacer{flex:1}
+  .count{font-size:13px;color:var(--muted)}
+  #progWrap{flex-basis:100%;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
+  #progBar{flex:1;height:8px;background:#d6d6dc;border-radius:4px;overflow:hidden;display:flex}
+  #barDone{height:100%;background:var(--ok);width:0;transition:width .2s}
+  #barPart{height:100%;background:#e0b341;width:0;transition:width .2s}
+
+  main{display:flex;gap:16px;padding:16px;align-items:flex-start}
+  .colG{flex:0 0 30%;min-width:280px;display:flex;flex-direction:column;gap:12px;position:sticky;top:96px;max-height:calc(100vh - 110px);overflow:auto}
+  .colG.hidden{display:none}
+  .colM{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 18px}
+  .panel.dark{border:2px solid var(--border)}
+  .panel>h2,details>summary{font-size:13px;letter-spacing:.3px;text-transform:uppercase;text-decoration:underline;margin:0 0 10px;font-weight:700}
+  details>summary{cursor:pointer;margin:0}
+  details[open]>summary{margin-bottom:10px}
+  #promptBody{max-height:50vh;overflow:auto;font-size:13px}
+
+  .grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(290px,1fr);gap:12px;overflow-x:auto;padding-bottom:6px}
+  .mcol{background:var(--panel);border:2px solid var(--border);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .mcol>h3{margin:0;font-size:14px;display:flex;justify-content:space-between;align-items:baseline}
+  .mcol>h3 small{font-weight:400;color:var(--muted);font-size:12px}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+  .item.done{border-left:4px solid var(--ok)}
+  .item.part{border-left:4px solid #e0b341}
+  .sent{margin:2px 0 6px;display:flex;gap:6px}
+  .lbl{flex:none;display:inline-block;font-size:11px;font-weight:700;color:#fff;border-radius:8px;padding:0 7px;height:18px;line-height:18px;margin-top:2px}
+  .lbl.neg{background:var(--ko)} .lbl.pos{background:var(--ok)}
+  .q{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);padding:2px 0}
+  .btns{display:flex;gap:4px;flex:none}
+  .btns button{padding:2px 10px;font-size:12.5px;min-width:88px;color:var(--muted)}
+  .btns button.y:hover{border-color:var(--ok);color:var(--ok)} .btns button.n:hover{border-color:var(--ko);color:var(--ko)}
+  .btns button.y.on{background:var(--ok);color:#fff;border-color:var(--ok)}
+  .btns button.n.on{background:var(--ko);color:#fff;border-color:var(--ko)}
+  .mcol textarea{width:100%;min-height:54px;resize:vertical;font:inherit;font-size:13px;padding:6px 8px;border:1px solid #999;border-radius:5px}
+
+  .resp h1,.resp h2,.resp h3,.resp h4{margin:14px 0 6px;line-height:1.3}
+  .resp h1{font-size:16px}.resp h2{font-size:15px}.resp h3{font-size:14px}.resp h4{font-size:13.5px}
+  .resp p{margin:6px 0}
+  .resp ul,.resp ol{margin:6px 0;padding-left:22px}
+  .resp li{margin:3px 0}
+  .resp blockquote{margin:8px 0;padding:4px 12px;border-left:3px solid #888;background:#d9d9df;color:#333}
+  .resp code{background:var(--code);padding:1px 4px;border-radius:3px;font-size:13px}
+  .resp pre{background:var(--code);padding:10px;border-radius:5px;overflow:auto;white-space:pre-wrap}
+  .resp hr{border:0;border-top:1px solid #aaa;margin:12px 0}
+  .muted{color:var(--muted)}
+  #toast{position:fixed;right:20px;bottom:20px;background:var(--border);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;max-width:360px}
+  #toast.on{opacity:1}
+  #syncState{display:none;padding:2px 10px;border-radius:10px;background:#d6d6dc;font-size:12.5px;white-space:nowrap}
+  #syncState.ok{background:#d4efdf;color:#145a32}
+  #syncState.pending,#syncState.unverified{background:#fcf3cf;color:#7d6608}
+  #syncState.offline,#syncState.error,#syncState.auth{background:#f5b7b1;color:#78281f}
+  @media (max-width:900px){ main{flex-direction:column} .colG{position:static;max-height:none;flex-basis:auto;width:100%} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Datu sintetikoak</h1>
+  <span id="syncState"></span>
+  <div class="spacer"></div>
+  <button id="btnExport" title="Anotazioak JSON fitxategi gisa deskargatu (hau bidali koordinatzaileari)">⬇ Gorde fitxategia</button>
+  <button id="btnImport" title="Aurrez gordetako fitxategia kargatu (lehendik daudenekin batzen da)">⬆ Kargatu fitxategia</button>
+  <input id="fileJson" type="file" accept=".json,application/json" hidden>
+  <button id="btnG" title="Gramatika-sarrera erakutsi/ezkutatu">☰</button>
+  <button id="prev">◀</button>
+  <select id="selEntry" style="max-width:320px"></select>
+  <span class="count" id="count"></span>
+  <button id="next">▶</button>
+  <div id="progWrap"><div id="progBar"><div id="barDone"></div><div id="barPart"></div></div><span id="progTxt"></span></div>
+</header>
+
+<main>
+  <div class="colG" id="colG">
+    <section class="panel">
+      <details id="promptBox"><summary>Prompta</summary><div class="resp" id="promptBody"></div></details>
+    </section>
+    <section class="panel dark">
+      <h2>Gramatika-sarrera</h2>
+      <div class="resp" id="gBody"></div>
+    </section>
+  </div>
+  <div class="colM">
+    <section class="panel">
+      <b>Nola anotatu:</b> txartel bakoitzean esaldi bat (<span class="lbl pos">✓</span>) edo pare minimo bat
+      (<span class="lbl neg">✗</span> <span class="lbl pos">✓</span>) dago. Erantzun bi galdera hauei:
+      <ol style="margin:6px 0 0;padding-left:22px">
+        <li><b>Zuzena al da?</b>
+          <ul style="margin:2px 0;padding-left:18px">
+            <li>Esaldia: zuzena bada, sakatu <i>Zuzena</i>; bestela, <i>Okerra</i>.</li>
+            <li>Pare minimoa: sakatu <i>Zuzena</i> soilik <span class="lbl neg">✗</span> esaldia okerra <b>eta</b>
+              <span class="lbl pos">✓</span> esaldia zuzena badira; bestela, <i>Okerra</i>.</li>
+          </ul></li>
+        <li><b>Arauari lotuta dago?</b> Esaldiak edo pareak ezkerreko gramatika-sarrerako araua erakusten badu,
+          sakatu <i>Lotuta</i>; bestela, <i>Ez lotuta</i>.</li>
+      </ol>
+    </section>
+    <div class="grid" id="grid"></div>
+  </div>
+</main>
+
+<script>
+/* ============ DATUAK ============ */
+const DATA = /*__EMBEDDED_DATA__*/null;          // build_anotatzailea.py-k betetzen du
+const SYNC_URL = /*__SYNC_URL__*/null;           // --sync-url gabe: sinkronizaziorik ez
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+const $ = id => document.getElementById(id);
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function lsGet(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:v; }catch(e){ return d; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function toast(msg){
+  const t=$('toast')||Object.assign(document.body.appendChild(document.createElement('div')),{id:'toast'});
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),4500);
+}
+
+/* ============ EGOERA (anotatzaile bakoitzeko) ============ */
+// Anotatzaile-izenik ez: nabigatzaile bakoitzak id anonimo bat du (zutabeen ordena eta esportazioak bereizteko)
+let who = lsGet('synth_id','');
+if(!who){ who=Math.random().toString(16).slice(2,10); lsSet('synth_id',who); }
+let annot = {};   // 'sarrera|eredua|item' -> {pos, neg, rule}  ('y' | 'n' | undefined)
+let notes = {};   // 'sarrera|eredua' -> testua
+let queue = {};   // sinkronizatzeko gakoak -> bertsioa
+let idx = Math.max(0, Math.min(DATA.entries.length-1, +lsGet('synth_idx','0')||0));
+
+function loadState(){
+  const p='synth2:'+who+':';
+  try{ annot=JSON.parse(lsGet(p+'annot','{}'))||{}; }catch(e){ annot={}; }
+  try{ notes=JSON.parse(lsGet(p+'notes','{}'))||{}; }catch(e){ notes={}; }
+  try{ queue=JSON.parse(lsGet(p+'queue','{}'))||{}; }catch(e){ queue={}; }
+}
+function saveState(){
+  const p='synth2:'+who+':';
+  lsSet(p+'annot',JSON.stringify(annot)); lsSet(p+'notes',JSON.stringify(notes)); lsSet(p+'queue',JSON.stringify(queue));
+}
+
+/* ============ ORDENA AUSAZKOA ============ */
+// Anotatzaile + sarrera bakoitzeko ordena egonkorra baina desberdina: posizio-alborapena saihesteko
+function hashStr(s){ let h=2166136261; for(const c of s){ h^=c.codePointAt(0); h=Math.imul(h,16777619); } return h>>>0; }
+function rng(seed){ return ()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function shuffled(arr, seedStr){
+  const a=arr.slice(), r=rng(hashStr(seedStr));
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+const modelsOf = e => shuffled(e.models, who+'|'+e.name);
+
+/* ============ MARKDOWN TXIKIA ============ */
+function inline(s){
+  s = esc(s);
+  s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<em>$2</em>');
+  return s;
+}
+function md(src){
+  const L = String(src||'').replace(/\r\n/g,'\n').split('\n'); let html=''; let i=0;
+  const stack=[];
+  const closeTo = ind => { while(stack.length && stack[stack.length-1].indent>=ind){ html+='</li></'+stack.pop().type+'>'; } };
+  while(i<L.length){
+    let ln=L[i], m;
+    if(/^```/.test(ln)){ let c=[];i++; while(i<L.length&&!/^```/.test(L[i])){c.push(L[i]);i++} i++; closeTo(0); html+='<pre><code>'+esc(c.join('\n'))+'</code></pre>'; continue; }
+    if((m=ln.match(/^(#{1,6})\s+(.*)$/))){ closeTo(0); const l=Math.min(m[1].length,4); html+=`<h${l}>${inline(m[2])}</h${l}>`; i++; continue; }
+    if(/^\s*-{3,}\s*$/.test(ln)){ closeTo(0); html+='<hr>'; i++; continue; }
+    if(/^>/.test(ln)){ closeTo(0); let q=[]; while(i<L.length&&/^>/.test(L[i])){q.push(L[i].replace(/^>\s?/,''));i++} html+='<blockquote>'+md(q.join('\n'))+'</blockquote>'; continue; }
+    if((m=ln.match(/^(\s*)([*+-]|\d+\.)\s+(.*)$/))){
+      const ind=m[1].replace(/\t/g,'    ').length, type=/\d/.test(m[2])?'ol':'ul';
+      const top=stack[stack.length-1];
+      if(!top || ind>top.indent){ html+='<'+type+'><li>'; stack.push({type,indent:ind}); }
+      else { closeTo(ind+1); const t=stack[stack.length-1]; if(t && t.indent===ind){ html+='</li><li>'; } else { html+='<'+type+'><li>'; stack.push({type,indent:ind}); } }
+      html+=inline(m[3]); i++; continue;
+    }
+    if(ln.trim()===''){
+      let j=i+1; while(j<L.length&&L[j].trim()==='') j++;
+      if(!(stack.length && j<L.length && /^\s*([*+-]|\d+\.)\s/.test(L[j]))) closeTo(0);
+      i++; continue;
+    }
+    if(stack.length && /^\s+\S/.test(ln)){ html+='<br>'+inline(ln.trim()); i++; continue; }
+    closeTo(0);
+    let p=[ln]; i++;
+    while(i<L.length && L[i].trim()!=='' && !/^(#{1,6}\s|```|>|\s*([*+-]|\d+\.)\s|\s*-{3,}\s*$)/.test(L[i])){p.push(L[i]);i++}
+    html+='<p>'+p.map(inline).join('<br>')+'</p>';
+  }
+  closeTo(0); return html;
+}
+
+/* ============ ANOTAZIOAK ============ */
+// Pare minimoa item bakarra da (esaldi bakarrekoen pareko): bi baldintza, biak OK = puntu 1
+const QS = ['ok','rule'];
+const qText = (q,it) => q==='rule' ? 'Arauari lotuta dago?'
+  : it.kind==='pair' ? 'Pare minimoa zuzena al da?' : 'Esaldia zuzena al da?';
+const btnText = q => q==='rule' ? ['✓ Lotuta','✗ Ez lotuta'] : ['✓ Zuzena','✗ Okerra'];
+function itemState(e,m,it){
+  const a=annot[e.name+'|'+m.id+'|'+it.iid]||{}, n=QS.filter(q=>a[q]).length;
+  return n===QS.length ? 'done' : n ? 'part' : '';
+}
+function progress(){
+  let total=0, done=0, part=0;
+  DATA.entries.forEach(e=>e.models.forEach(m=>m.items.forEach(it=>{ total++; const s=itemState(e,m,it); if(s==='done') done++; else if(s) part++; })));
+  return {total, done, part};
+}
+function updateProgress(){
+  const p=progress();
+  $('barDone').style.width=(p.total?100*p.done/p.total:0)+'%';
+  $('barPart').style.width=(p.total?100*p.part/p.total:0)+'%';
+  $('progTxt').textContent=`${p.done} / ${p.total} item anotatuta (${p.total?Math.round(100*p.done/p.total):0}%) · ${p.part} hasita`;
+  [...$('selEntry').options].forEach((o,k)=>{
+    const e=DATA.entries[k], all=e.models.every(m=>m.items.every(it=>itemState(e,m,it)==='done'));
+    o.textContent=(all?'✓ ':'')+e.name;
+  });
+}
+function setAnswer(e,m,it,q,v){
+  const key=e.name+'|'+m.id+'|'+it.iid, a=Object.assign({},annot[key]);
+  if(a[q]===v) delete a[q]; else a[q]=v;
+  annot[key]=a; markDirty(key);
+}
+
+/* ============ ERRENDERIZAZIOA ============ */
+function itemHtml(e,m,it){
+  const a=annot[e.name+'|'+m.id+'|'+it.iid]||{};
+  const sent = (cls,lbl,txt) => `<div class="sent"><span class="lbl ${cls}">${lbl}</span><span>${esc(txt)}</span></div>`;
+  let h = `<div class="item ${itemState(e,m,it)}" data-m="${m.id}" data-i="${esc(it.iid)}">`;
+  if(it.kind==='pair') h += sent('neg','✗',it.neg);
+  h += sent('pos','✓',it.pos);
+  QS.forEach(q=>{
+    h += `<div class="q"><span>${qText(q,it)}</span><span class="btns">
+      <button class="y ${a[q]==='y'?'on':''}" data-q="${q}" data-v="y">${btnText(q)[0]}</button>
+      <button class="n ${a[q]==='n'?'on':''}" data-q="${q}" data-v="n">${btnText(q)[1]}</button></span></div>`;
+  });
+  return h+'</div>';
+}
+function show(k){
+  k=Math.max(0,Math.min(DATA.entries.length-1,k));
+  const same=k===idx, y=window.scrollY, x=$('grid').scrollLeft;   // birmarraztean scroll-a mantendu
+  idx=k; lsSet('synth_idx',String(idx));
+  const e=DATA.entries[idx];
+  $('gBody').innerHTML = md(e.grammar) || '<p class="muted">Sarrerarik ez.</p>';
+  $('selEntry').value=idx; $('count').textContent=`${idx+1} / ${DATA.entries.length}`;
+  $('prev').disabled=idx===0; $('next').disabled=idx===DATA.entries.length-1;
+  const grid=$('grid'); grid.innerHTML='';
+  modelsOf(e).forEach((m,p)=>{
+    const col=document.createElement('div'); col.className='mcol';
+    const nk=e.name+'|'+m.id;
+    col.innerHTML = `<h3>${LETTERS[p]} eredua <small>${m.items.length} item</small></h3>`
+      + (m.items.length ? m.items.map(it=>itemHtml(e,m,it)).join('') : '<p class="muted">Eredu honek ez du esaldi sintetikorik sortu.</p>')
+      + `<textarea placeholder="${LETTERS[p]} ereduari buruzko oharrak…">${esc(notes[nk]||'')}</textarea>`;
+    col.querySelectorAll('.btns button').forEach(b=>b.onclick=()=>{
+      const card=b.closest('.item'), it=m.items.find(x=>x.iid===card.dataset.i);
+      setAnswer(e,m,it,b.dataset.q,b.dataset.v);
+      show(idx);
+    });
+    col.querySelector('textarea').addEventListener('input',ev=>{
+      if(ev.target.value.trim()) notes[nk]=ev.target.value; else delete notes[nk];
+      markDirty(nk);
+    });
+    grid.appendChild(col);
+  });
+  if(same){ window.scrollTo(0,y); grid.scrollLeft=x; } else window.scrollTo(0,0);
+  updateProgress();
+}
+
+/* ============ ESPORTAZIOA ============ */
+function position(entryName, mid){
+  const e=DATA.entries.find(x=>x.name===entryName); if(!e) return '';
+  const p=modelsOf(e).findIndex(m=>m.id===mid); return p<0?'':LETTERS[p];
+}
+const v01 = v => v==='y'?1:(v==='n'?0:null);
+function buildRecord(key){
+  const parts=key.split('|'), entry=parts[0], mid=parts[1];
+  const rec={annotator:who, entry, model:mid, position:position(entry,mid)};
+  if(parts.length===2) return Object.assign(rec,{item:'_oharrak', kind:'', negative:'', positive:'', correct_ok:null, rule_ok:null, score:null, observations:notes[key]||''});
+  const e=DATA.entries.find(x=>x.name===entry), m=e&&e.models.find(x=>x.id===mid), it=m&&m.items.find(x=>x.iid===parts[2]);
+  const a=annot[key]||{}, ok=v01(a.ok), rule=v01(a.rule);
+  return Object.assign(rec,{item:parts[2], kind:it?it.kind:'', rule_index:it?it.r+1:null,
+    negative:it&&it.neg||'', positive:it?it.pos:'', correct_ok:ok, rule_ok:rule,
+    score: ok===null||rule===null ? null : ok*rule, observations:''});
+}
+function allKeys(){
+  return Object.keys(annot).filter(k=>Object.keys(annot[k]||{}).length).concat(Object.keys(notes));
+}
+function exportJSON(){
+  const recs=allKeys().map(buildRecord);
+  const blob=new Blob(['[\n'+recs.map(r=>'  '+JSON.stringify(r)).join(',\n')+'\n]\n'],{type:'application/json;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  const d=new Date(), z=x=>String(x).padStart(2,'0');
+  a.download=`sintetikoak_${who}_${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}.json`; a.click();
+}
+// Erregistroak (JSON edo hojatik) egoera lokalean batu. skipQueued: bidali gabeko aldaketa lokalek irabazten dute
+function mergeRecords(recs, skipQueued){
+  let n=0;
+  (recs||[]).forEach(r=>{
+    if(!r || !r.entry || !r.model || !r.item) return;
+    if(r.item==='_oharrak'){
+      const k=r.entry+'|'+r.model;
+      if(skipQueued && queue[k]) return;
+      if(typeof r.observations==='string' && r.observations.trim() && notes[k]!==r.observations){ notes[k]=r.observations; n++; }
+      return;
+    }
+    const k=r.entry+'|'+r.model+'|'+r.item;
+    if(skipQueued && queue[k]) return;
+    const a=Object.assign({},annot[k]); let ch=false;
+    [['ok','correct_ok'],['rule','rule_ok']].forEach(([q,f])=>{
+      const v=r[f]===1||r[f]==='1'?'y':(r[f]===0||r[f]==='0'?'n':null);
+      if(v && a[q]!==v){ a[q]=v; ch=true; }
+    });
+    if(ch){ annot[k]=a; n++; }
+  });
+  return n;
+}
+async function importJSON(file){
+  let data; try{ data=JSON.parse(await file.text()); }catch(e){ toast('Errorea: JSON baliogabea'); return; }
+  if(!Array.isArray(data)){ toast('Errorea: formatu ezezaguna'); return; }
+  const n=mergeRecords(data,false);
+  allKeys().forEach(k=>queue[k]=Date.now());
+  saveState(); show(idx); flushSoon();
+  toast(`${n} anotazio inportatu dira`);
+}
+
+/* ============ SINKRONIZAZIOA (Google Sheets) ============ */
+let syncTimer=null, syncing=false, syncStatus='ok', errorShown=false;
+// Pasahitza: edonork ireki eta anotatu dezake, baina hojara bidaltzeko pasahitz zuzena behar da
+let pw = lsGet('synth_pw','');
+function setStatus(st){ syncStatus=st; updateSyncUI(); }
+function askPassword(){
+  const v=prompt('Anotazioak Google Sheets-era bidaltzeko pasahitza:', '');
+  if(v==null || !v.trim()) return;
+  pw=v.trim(); lsSet('synth_pw',pw); errorShown=false;
+  setStatus('pending'); startSync();
+}
+function updateSyncUI(){
+  if(!SYNC_URL) return;
+  const el=$('syncState'), n=Object.keys(queue).length, st=syncStatus;
+  el.style.display='inline-block';
+  el.textContent={ok:'☁ sinkronizatuta ✓', unverified:'☁ bidalita (egiaztatu gabe)', pending:`☁ ${n} bidaltzeko`,
+    offline:`☁ konexiorik ez · ${n} zain`, error:`☁ errorea · ${n} zain`, auth:`🔒 pasahitza behar da · ${n} zain`}[st]||'';
+  el.title={ok:'Anotazio guztiak Google Sheets-en daude.', unverified:'Bidalita, baina erantzuna ezin izan da irakurri. Egiaztatu hojan.',
+    pending:'Bidaltzeko dauden anotazioak.', offline:'Konexiorik ez: anotazioak gordeta daude eta berriro saiatuko da.',
+    error:'Google Sheets-ek errorea itzuli du. Egiaztatu Apps Script-aren URLa eta baimenak (Who has access: Anyone).',
+    auth:'Egin klik hemen pasahitza idazteko. Anotazioak gordeta daude eta pasahitza jarri ondoren bidaliko dira.'}[st]||'';
+  el.style.cursor = st==='auth' ? 'pointer' : '';
+  el.className=st;
+}
+function markDirty(key){
+  queue[key]=Date.now(); saveState();
+  if(!SYNC_URL) return;
+  setStatus('pending'); flushSoon();
+}
+function flushSoon(){ if(!SYNC_URL) return; clearTimeout(syncTimer); syncTimer=setTimeout(flush,700); }
+async function postRecords(body){
+  const headers={'Content-Type':'text/plain;charset=utf-8'};
+  try{
+    const r=await fetch(SYNC_URL,{method:'POST',headers,body});
+    let j=null; try{ j=await r.json(); }catch(e){}
+    return (j&&j.ok)?'ok':(j&&j.error==='auth'?'auth':'error');
+  }catch(e){
+    // CORS-ek erantzuna irakurtzea eragotz badezake, 'no-cors' bidez berriz (idempotentea: errenkada eguneratzen da)
+    try{ await fetch(SYNC_URL,{method:'POST',mode:'no-cors',headers,body}); return 'unverified'; }
+    catch(e2){ return 'offline'; }
+  }
+}
+async function flush(){
+  if(!SYNC_URL||syncing) return;
+  const keys=Object.keys(queue);
+  if(!keys.length){ if(syncStatus!=='unverified') setStatus('ok'); return; }
+  if(!pw){ setStatus('auth'); return; }
+  syncing=true;
+  const sent={}; keys.forEach(k=>sent[k]=queue[k]);
+  const res=await postRecords(JSON.stringify({password:pw, records:keys.map(buildRecord)}));
+  syncing=false;
+  if(res==='ok'||res==='unverified'){
+    keys.forEach(k=>{ if(queue[k]===sent[k]) delete queue[k]; });
+    saveState(); errorShown=false;
+    if(Object.keys(queue).length){ setStatus('pending'); flushSoon(); } else setStatus(res);
+  }else if(res==='auth'){
+    pw=''; lsSet('synth_pw','');
+    setStatus('auth'); toast('Pasahitz okerra. Egin klik 🔒 ikonoan berriro saiatzeko.');
+  }else{
+    setStatus(res);
+    if(res==='error' && !errorShown){ errorShown=true; toast('Errorea Google Sheets-ekin sinkronizatzean.'); }
+  }
+}
+async function pull(){
+  if(!SYNC_URL||!pw) return;
+  try{
+    const r=await fetch(SYNC_URL+(SYNC_URL.includes('?')?'&':'?')+'action=records&annotator='+encodeURIComponent(who)+'&password='+encodeURIComponent(pw));
+    const j=await r.json();
+    if(!j||!j.ok) return;
+    const n=mergeRecords(j.records,true);
+    if(n){ saveState(); show(idx); toast(`${n} anotazio Google Sheets-etik berreskuratu dira`); }
+  }catch(e){}
+}
+async function startSync(){ updateSyncUI(); await pull(); await flush(); }
+
+/* ============ UI ============ */
+DATA.entries.forEach((e,k)=>{ const o=document.createElement('option'); o.value=k; o.textContent=e.name; $('selEntry').appendChild(o); });
+$('promptBody').innerHTML = DATA.prompt ? md(DATA.prompt) : '<p class="muted">Promptik ez.</p>';
+$('prev').onclick=()=>show(idx-1);
+$('next').onclick=()=>show(idx+1);
+$('selEntry').onchange=ev=>show(+ev.target.value);
+$('btnG').onclick=()=>$('colG').classList.toggle('hidden');
+$('btnExport').onclick=exportJSON;
+$('btnImport').onclick=()=>$('fileJson').click();
+$('fileJson').onchange=async ev=>{ for(const f of ev.target.files) await importJSON(f); ev.target.value=''; };
+document.addEventListener('keydown',ev=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(ev.target.tagName)) return;
+  if(ev.key==='ArrowRight') show(idx+1);
+  if(ev.key==='ArrowLeft') show(idx-1);
+});
+loadState(); show(idx);
+if(SYNC_URL){
+  $('syncState').onclick=()=>{ if(syncStatus==='auth') askPassword(); };
+  if(!pw) setTimeout(askPassword,300);
+  setInterval(()=>{ if(Object.keys(queue).length) flush(); },30000);
+  window.addEventListener('online',()=>flush());
+  startSync();
+}
+</script>
+</body>
+</html>
