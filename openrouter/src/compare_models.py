@@ -66,10 +66,6 @@ MODELS = {
     "z-ai/glm-5.3":                      ["z-ai/fp8"],
     "moonshotai/kimi-k3":                ["moonshotai/mxfp4"],
     "qwen/qwen3.8-max-0902":             ["alibaba"],
-    "meta/muse-spark-open":              ["together"],
-
-    "openai/gpt-6.1-sol":                ["openai"],
-    "anthropic/claude-sonnet-5.5":       ["anthropic"],
     "google/gemini-4-argon":             ["google-vertex/global"],
     "google/gemini-3.1-pro-preview":     ["google-vertex/global"],
 }

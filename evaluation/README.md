@@ -29,6 +29,7 @@ INFER_MODELS=(
   "google/gemini-3.1-pro-preview"
   "openai/gpt-6.1-sol"
   "anthropic/claude-sonnet-5.5"
+  "google/gemini-4-argon"
 )
 
 for INFER_MODEL in "${INFER_MODELS[@]}"; do
@@ -70,6 +71,7 @@ INFER_MODELS=(
     "openai/gpt-6.1-sol"
     "anthropic/claude-sonnet-5.5"
     "Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"
+    "google/gemini-4-argon"
 )
 
 for INFER_MODEL in "${INFER_MODELS[@]}"; do
@@ -99,6 +101,7 @@ INFER_MODELS=(
     "openai/gpt-6.1-sol"
     "anthropic/claude-sonnet-5.5"
     "Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"
+    "google/gemini-4-argon"
 )
 
 # OpenRouter model names to evaluate
@@ -136,6 +139,7 @@ INFER_MODELS=(
     "openai/gpt-6.1-sol"
     "anthropic/claude-sonnet-5.5"
     "Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"
+    "google/gemini-4-argon"
 )
 
 JUDGE_MODEL="Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"

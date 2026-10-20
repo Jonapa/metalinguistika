@@ -1,6 +1,6 @@
 """Group judge results: one output file per judge model.
 
-Output structure (by_judge/<judge_model>.json):
+Output structure (results/emaitzak/<judge_model>.json):
 {
   "<infer_model>": [
     {"id": "1", "baldintzak": {"baldintza_1": 1, ...}},
@@ -8,6 +8,9 @@ Output structure (by_judge/<judge_model>.json):
   ],
   ...
 }
+
+Usage:
+    python3 0_group_by_judge.py -i results/ -o results/emaitzak/
 """
 import argparse
 import glob
@@ -17,7 +20,7 @@ from collections import defaultdict
 
 parser = argparse.ArgumentParser(description="Group judge results into one file per judge model.")
 parser.add_argument("-i", "--input-dir", default=".", help="Directory with the input JSON files (default: current directory)")
-parser.add_argument("-o", "--output-dir", default="by_judge", help="Directory to write the per-judge files (default: by_judge)")
+parser.add_argument("-o", "--output-dir", default="results/emaitzak", help="Directory to write the per-judge files (default: results/emaitzak)")
 args = parser.parse_args()
 
 INPUT_DIR = args.input_dir

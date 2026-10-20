@@ -6,7 +6,8 @@ Erabilera:
     python3 build_anotatzailea.py -n 10 -seed 0 -i ../output -o anotatzailea.html [-u https://script.google.com/macros/s/.../exec]
 
 output/<sarrera>/<eredua>.json bakoitzetik --n adibide sintetiko hautatzen dira (araueen artean
-txandaka, hazi finkoarekin: berreraikitzean lagin bera). Ereduen izenak ez dira HTMLan sartzen:
+txandaka, hazi finkoarekin: berreraikitzean lagin bera); --pair-ratio-k bikote/esaldi proportzioa
+finkatzen du (lehenetsia 0.8 -> %80 bikoteak). Ereduen izenak ez dira HTMLan sartzen:
 identifikatzaile opako bat (e1a2b3c) erabiltzen da, eta gakoa --key fitxategian gordetzen da
 (ez partekatu anotatzaileekin).
 """
@@ -43,25 +44,38 @@ def model_id(key, slug: str) -> str:
     return mid
 
 
-def sample_items(rules, n: int, rng: random.Random):
-    """Arau bakoitzetik kopuru bera (txandaka) ausaz hautatu; JSONeko ordena mantentzen da."""
-    pools = []
+def round_robin(pools, k: int):
+    """Arauen artean txandaka hartu, k item edo poolak agortu arte."""
+    out = []
+    while len(out) < k and any(pools):
+        for pool in pools:
+            if pool and len(out) < k:
+                out.append(pool.pop())
+    return out
+
+
+def sample_items(rules, n: int, rng: random.Random, pair_ratio: float = 0.8):
+    """n item hautatu: ~pair_ratio bikoteak, gainerakoak esaldi zuzenak (arauen artean txandaka).
+    Mota batek nahikoa ez badu, besteak betetzen du. JSONeko ordena mantentzen da."""
+    pair_pools, correct_pools = [], []
     for ri, r in enumerate(rules):
-        pool = []
+        pairs, correct = [], []
         for k, p in enumerate(r.get("synthetic_pairs") or []):
             if isinstance(p, dict) and (p.get("original") or p.get("corrected")):
-                pool.append({"iid": f"{ri}p{k}", "kind": "pair", "r": ri, "o": len(pool),
-                             "neg": p.get("original", ""), "pos": p.get("corrected", "")})
+                pairs.append({"iid": f"{ri}p{k}", "kind": "pair", "r": ri, "o": k,
+                              "neg": p.get("original", ""), "pos": p.get("corrected", "")})
+        n_pairs = len(r.get("synthetic_pairs") or [])
         for k, s in enumerate(r.get("synthetic_correct") or []):
             if isinstance(s, str) and s.strip():
-                pool.append({"iid": f"{ri}c{k}", "kind": "correct", "r": ri, "o": len(pool), "pos": s})
-        rng.shuffle(pool)
-        pools.append(pool)
-    out = []
-    while len(out) < n and any(pools):
-        for pool in pools:
-            if pool and len(out) < n:
-                out.append(pool.pop())
+                correct.append({"iid": f"{ri}c{k}", "kind": "correct", "r": ri, "o": n_pairs + k, "pos": s})
+        rng.shuffle(pairs)
+        rng.shuffle(correct)
+        pair_pools.append(pairs)
+        correct_pools.append(correct)
+    k_pairs = round(n * pair_ratio)
+    out = round_robin(pair_pools, k_pairs)
+    out += round_robin(correct_pools, n - len(out))
+    out += round_robin(pair_pools, n - len(out))  # esaldi zuzenak falta badira, bikoteekin bete
     out.sort(key=lambda it: (it["r"], it.pop("o")))
     return out
 
@@ -77,9 +91,13 @@ def main() -> int:
     ap.add_argument("-t", "--template", metavar="FILE.html", default=str(HERE / "anotatzailea_template.html"),
                     help="HTML txantiloia (lehenetsia: %(default)s)")
     ap.add_argument("-n", "--n", type=int, required=True, help="eredu eta sarrera bakoitzeko item kopurua (adib. 10)")
+    ap.add_argument("-p", "--pair-ratio", type=float, required=True,
+                    help="bikoteen proportzioa laginean, 0-1 (adib. 0.8 -> 80/20 bikote/esaldi)")
     ap.add_argument("-seed", "--seed", dest="seed", required=True, help="laginketaren hazia (adib. 0)")
     ap.add_argument("-u", "--sync-url", metavar="URL", default=None, help="Google Apps Script web app-aren URLa (/exec)")
     args = ap.parse_args()
+    if not 0.0 <= args.pair_ratio <= 1.0:
+        ap.error("--pair-ratio 0 eta 1 artean egon behar da")
 
     out_dir = Path(args.output_dir)
     if not out_dir.is_dir():
@@ -111,10 +129,11 @@ def main() -> int:
                 if prompt is None and meta.get("prompt"):
                     prompt = meta["prompt"].replace(grammar, "{grammar_text}")
             rng = random.Random(f"{args.seed}|{d.name}|{slug}")
-            items = sample_items(rules, args.n, rng)
+            items = sample_items(rules, args.n, rng, args.pair_ratio)
             # arauen testua ez da txertatzen: anotatzaileak ez du ikusi behar
             models.append({"id": model_id(key, slug), "items": items})
-            print(f"  {d.name} / {slug}: {len(rules)} arau, {len(items)} item")
+            n_pair = sum(it["kind"] == "pair" for it in items)
+            print(f"  {d.name} / {slug}: {len(rules)} arau, {len(items)} item ({n_pair} bikote, {len(items) - n_pair} esaldi)")
         if models:
             entries.append({"name": d.name, "grammar": grammar or "", "models": models})
 

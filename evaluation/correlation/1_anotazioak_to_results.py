@@ -1,20 +1,16 @@
 #!/usr/bin/env python3
-"""Convert a human annotation file (anotazioak_*.json) to the results/xd format.
+"""Convert a human annotation file (anotazioak_*.json) to the results/emaitzak format.
 
 Input  (list of records):
     {"model": "anthropic_claude-sonnet-5.5", "id": 1, "sentence": ..., "answer": ...,
      "baldintzak": {"1": 1, "2": 0, ...}, "observations": ...}
 
-Output (dict keyed by evaluated model, same as results/xd/<judge>.json):
+Output (dict keyed by evaluated model, same as results/emaitzak/<judge>.json):
     {"anthropic/claude-sonnet-5.5": [
         {"id": "1", "baldintzak": {"baldintza_1": 1, "baldintza_2": 0, ...}}, ...]}
 
 Usage:
-    python 1_anotazioak_to_results.py -i anotazioak_2026-10-18_1635.json \
-        -o results/xd/human.json --reference results/xd/anthropic_claude-sonnet-5.5.json
-
-    # -o can also be a directory; the file is then named human_<input name>.json
-    python 1_anotazioak_to_results.py -i anotazioak_2026-10-18_1635.json -o results/xd/
+    python3 1_anotazioak_to_results.py -i anotazioak_2026-10-18_1635.json -o results/emaitzak/
 """
 import argparse
 import json
@@ -59,10 +55,10 @@ def convert(annotations, reference_keys=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-i", "--input", required=True, type=Path, help="anotazioak_*.json file")
-    parser.add_argument("-o", "--output", type=Path, default=Path("results/xd"),
-                        help="output .json file or directory (default: results/xd/)")
+    parser.add_argument("-o", "--output", type=Path, default=Path("results/emaitzak"),
+                        help="output .json file or directory (default: results/emaitzak/)")
     parser.add_argument("-r", "--reference", type=Path,
-                        help="a results/xd/*.json file to take model keys and order from")
+                        help="a results/emaitzak/*.json file to take model keys and order from")
     args = parser.parse_args()
 
     if not args.input.is_file():
