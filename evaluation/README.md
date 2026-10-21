@@ -72,6 +72,10 @@ INFER_MODELS=(
     "anthropic/claude-sonnet-5.5"
     "Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"
     "google/gemini-4-argon"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_2"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_X4"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_X4_2"
 )
 
 for INFER_MODEL in "${INFER_MODELS[@]}"; do
@@ -102,6 +106,10 @@ INFER_MODELS=(
     "anthropic/claude-sonnet-5.5"
     "Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8"
     "google/gemini-4-argon"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_2"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_X4"
+    "_gpfs/scratch_ehu26_ehu129750_metalinguistika_training_CP_cache_model_CP_X4_2"
 )
 
 # OpenRouter model names to evaluate
@@ -149,4 +157,16 @@ for INFER_MODEL in "${INFER_MODELS[@]}"; do
         --input-path "output/judge/${FILENAME}__${INFER_MODEL//[\/:]/_}.json" \
         --output-path "output/results/${FILENAME}__${INFER_MODEL//[\/:]/_}__${JUDGE_MODEL//[\/:]/_}.json" 
 done
+```
+
+# 6.- Compute metrics
+    - For every file in `output/results/`, computes the combined baldintza pass rates (same as `correlation/3_judge_baldintza.py`): incorrect sentences B1, B1 & B5, all five (B1–B5); correct sentences B1, B1 & B2; all sentences B1, B1 & B5/B2.
+    - Partial credit (0.5) counts as not met; items with an unannotated (null) baldintza are left out of that set.
+    - The first row is a hardcoded baseline: Latxa 70B scored by the human annotators (`human_anotazioak_2026-10-18_1635.json`), hatched and separated by a dashed line.
+    - Writes `<out>/cumulative_pass.png` (same graph as `correlation/.../02_cumulative_pass.png`, with values on the bars) and prints the values as a table.
+
+```bash
+python src/04_compute_metrics.py \
+    --input-dir output/results \
+    --out output/metrics
 ```

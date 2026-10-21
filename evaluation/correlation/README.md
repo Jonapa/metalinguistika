@@ -29,6 +29,7 @@ python3 2_judgeOfJudge_gold_correlation.py \
              results/emaitzak/google_gemini-3.1-pro-preview.json \
              results/emaitzak/Latxa-Llama-3.1-70B-Instruct-exp_2_101_v2-FP8.json \
              results/emaitzak/openai_gpt-6.1-sol.json \
+             results/emaitzak/google_gemini-4-argon.json \
     --out results/emaitzak/correlation_results/
 ```
 
