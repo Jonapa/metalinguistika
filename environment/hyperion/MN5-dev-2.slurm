@@ -130,6 +130,7 @@ for i in {1..100}; do echo -n '#'; done; echo
 git clone https://github.com/Dao-AILab/flash-attention.git
 cd flash-attention/
 # https://github.com/Dao-AILab/flash-attention/releases
+# TODO: beta36
 git checkout fa4-v4.0.0.beta35
 
 export FLASH_ATTENTION_FORCE_BUILD=TRUE

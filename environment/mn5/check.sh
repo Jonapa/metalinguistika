@@ -12,11 +12,6 @@ export CUDAHOSTCXX=$CXX
 export MAX_JOBS=$(( $(nproc) / 2 ))
 export CMAKE_PREFIX_PATH=$(dirname $(which python))
 
-export TRITON_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.triton
-export TORCHINDUCTOR_CACHE_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/.inductor
-export CUDA_CACHE_PATH=/gpfs/scratch/ehu26/ehu129750/.cache/.nv
-export TORCH_EXTENSIONS_DIR=/gpfs/scratch/ehu26/ehu129750/.cache/torch_extensions
-
 for i in {1..100}; do echo -n '#'; done; echo
 axolotl --help
 python -c "import lm_eval; print(f'LM Evaluation Harness: {lm_eval.__version__}')"
@@ -44,6 +39,6 @@ for i in {1..100}; do echo -n '#'; done; echo
 
 python -m pip check
 
-sh /gpfs/scratch/ehu26/ehu129750/gpu_env_check.sh
+sh /gpfs/scratch/ehu26/ehu129750/metalinguistika/environment/mn5/gpu_env_check.sh
 
 source /gpfs/scratch/ehu26/ehu129750/build-env/bin/deactivate
